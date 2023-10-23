@@ -10,11 +10,13 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useState } from "react";
-import { loginAdmin } from "../../api/admin/index.js";
+/* import { useState } from "react"; */
+/* import { loginAdmin } from "../../api/admin/index.js"; */
+import { useAuth } from "../../api/admin/index.js";
 
 export default function AdminLoginForm({ type }) {
-  const [loading, setLoading] = useState(false);
+  /* const [loading, setLoading] = useState(false); */
+  const { adminLogin } = useAuth();
 
   const handleSubmit = (event) => {
     if (type === "login") {
@@ -25,7 +27,18 @@ export default function AdminLoginForm({ type }) {
         password: event.currentTarget.password.value,
       };
 
-      loginAdmin(payload).then((res) => {
+      adminLogin(payload).then((res) => {
+        // ele vai sempre entrar no .then(), mesmo que haja erro (não sei pq)
+        if (res.name === "AxiosError") {
+          console.log("DEU ERRO!", res.response.data.msg); // mensagem de erro do BACK
+        } else {
+          console.log("DEU CERTO!", res);
+          //router.refresh();
+          //router.push("/protected");
+        }
+      });
+
+      /* loginAdmin(payload).then((res) => {
         // ele vai sempre entrar no .then(), mesmo que haja erro (não sei pq)
         if (res.name === "AxiosError") {
           console.log("DEU ERRO!", res.response.data.msg); // mensagem de erro do BACK
@@ -35,7 +48,7 @@ export default function AdminLoginForm({ type }) {
           //router.refresh();
           //router.push("/protected");
         }
-      });
+      }); */
     } else {
       console.log("register!!");
     }
