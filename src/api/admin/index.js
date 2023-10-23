@@ -1,6 +1,9 @@
+import { createContext, useContext, useMemo } from "react";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 import { api } from "../index.js";
 
-import { api } from "..";
+const AdminContext = createContext();
 
 export async function getAllAdmins() {
   try {
@@ -15,6 +18,7 @@ export async function getAllAdmins() {
 }
 
 export async function loginAdmin(request) {
+  /* const [cookies, setCookies, removeCookie] = useCookies(); */
   const body = await request;
 
   const { email, password } = body;
@@ -29,6 +33,7 @@ export async function loginAdmin(request) {
       { withCredentials: true }
     );
     if (response.status === 200) {
+      console.log("AQUI:", response.data);
       return response.data;
     }
   } catch (error) {
