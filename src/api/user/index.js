@@ -3,19 +3,31 @@ import { useCookies } from "react-cookie";
 /* import { useNavigate } from "react-router-dom"; */
 import { api } from "../index.js";
 
-const AdminContext = createContext();
+const UserContext = createContext();
 
-export const AdminProvider = ({ children }) => {
+export async function getAllUsers() {
+  try {
+    const response = await api.get("/user");
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
+export const UserProvider = ({ children }) => {
   const [cookies, setCookies] = useCookies();
 
-  const adminLogin = async (request) => {
+  const userLogin = async (request) => {
     const body = await request;
 
     const { email, password } = body;
 
     try {
       const response = await api.post(
-        "/admin/login",
+        "/user/login",
         {
           email: email,
           password: password,
@@ -23,7 +35,7 @@ export const AdminProvider = ({ children }) => {
         { withCredentials: true }
       );
       if (response.status === 200) {
-        setCookies("admin", response.data.token, {
+        setCookies("user", response.data.token, {
           path: "/",
           maxAge: 60 * 60,
           sameSite: "strict",
@@ -40,29 +52,15 @@ export const AdminProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       cookies,
-      adminLogin,
+      userLogin,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [cookies]
   );
 
-  return (
-    <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
-  );
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
 export const useAuth = () => {
-  return useContext(AdminContext);
+  return useContext(UserContext);
 };
-
-export async function getAllAdmins() {
-  try {
-    const response = await api.get("/admin");
-    if (response.status === 200) {
-      return response.data;
-    }
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-}
