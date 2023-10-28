@@ -1,58 +1,36 @@
-import { createContext, useContext, useMemo } from "react";
-import { useCookies } from "react-cookie";
+/* import { createContext, useContext, useMemo } from "react"; */
+/* import { useCookies } from "react-cookie"; */
 /* import { useNavigate } from "react-router-dom"; */
+import Cookies from "js-cookie";
 import { api } from "../index.js";
 
-const AdminContext = createContext();
+export const adminLogin = async (request) => {
+  const body = await request;
+  /* const [cookies, setCookies] = useCookies() */
+  const { email, password } = body;
 
-export const AdminProvider = ({ children }) => {
-  const [cookies, setCookies] = useCookies();
-
-  const adminLogin = async (request) => {
-    const body = await request;
-
-    const { email, password } = body;
-
-    try {
-      const response = await api.post(
-        "/admin/login",
-        {
-          email: email,
-          password: password,
-        },
-        { withCredentials: true }
-      );
-      if (response.status === 200) {
-        setCookies("admin", response.data.token, {
-          path: "/",
-          maxAge: 60 * 60,
-          sameSite: "strict",
-        }); // your token
-        // setCookies("name", response.data.existingAdmin.name);  optional data
-        return response.data;
-      }
-    } catch (error) {
-      // mensagem de erro do back
-      return error;
+  try {
+    const response = await api.post(
+      "/admin/login",
+      {
+        email: email,
+        password: password,
+      },
+      { withCredentials: true }
+    );
+    if (response.status === 200) {
+      Cookies.set("admin", response.data.token, {
+        expires: 1,
+        path: "/",
+        sameSite: "strict",
+      }); // your token
+      // setCookies("name", response.data.existingAdmin.name);  optional data
+      return response.data;
     }
-  };
-
-  const value = useMemo(
-    () => ({
-      cookies,
-      adminLogin,
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [cookies]
-  );
-
-  return (
-    <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
-  );
-};
-
-export const useAuth = () => {
-  return useContext(AdminContext);
+  } catch (error) {
+    // mensagem de erro do back
+    return error;
+  }
 };
 
 export async function getAllAdmins() {

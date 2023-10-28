@@ -12,11 +12,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 /* import { useState } from "react"; */
 /* import { loginAdmin } from "../../api/admin/index.js"; */
-import { useAuth } from "../../api/admin/index.js";
+/* import { useAuth } from "../../api/admin/index.js"; */
+import { adminLogin } from "../../api/admin";
 
 export default function AdminLoginForm({ type }) {
   /* const [loading, setLoading] = useState(false); */
-  const { adminLogin } = useAuth();
+  /* const { adminLogin } = useAuth(); */
 
   const handleSubmit = (event) => {
     if (type === "login") {

@@ -1,9 +1,7 @@
-import { AdminProvider } from "../api/admin";
+/* import { AdminProvider } from "../api/admin"; */
 
 const AppProvider = ({ children }) => (
-  <>
-    <AdminProvider>{children}</AdminProvider>
-  </>
+  <>{/* <AdminProvider>{children}</AdminProvider> */}</>
 );
 
 export default AppProvider;

@@ -11,12 +11,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 /* import { useState } from "react"; */
-/* import { loginAdmin } from "../../api/admin/index.js"; */
-import { useAuth } from "../../api/user/index.js";
+import { userLogin } from "../../api/user";
 
 export default function UserLoginForm({ type }) {
   /* const [loading, setLoading] = useState(false); */
-  const { userLogin } = useAuth();
 
   const handleSubmit = (event) => {
     if (type === "login") {
