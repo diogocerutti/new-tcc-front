@@ -14,10 +14,12 @@ import Container from "@mui/material/Container";
 /* import { loginAdmin } from "../../api/admin/index.js"; */
 /* import { useAuth } from "../../api/admin/index.js"; */
 import { adminLogin } from "../../api/admin";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminLoginForm({ type }) {
   /* const [loading, setLoading] = useState(false); */
   /* const { adminLogin } = useAuth(); */
+  let navigate = useNavigate();
 
   const handleSubmit = (event) => {
     if (type === "login") {
@@ -34,6 +36,8 @@ export default function AdminLoginForm({ type }) {
           console.log("DEU ERRO!", res.response.data.msg); // mensagem de erro do BACK
         } else {
           console.log("DEU CERTO!", res);
+          alert("Logado!");
+          return navigate("/admin/dashboard");
           //router.refresh();
           //router.push("/protected");
         }
