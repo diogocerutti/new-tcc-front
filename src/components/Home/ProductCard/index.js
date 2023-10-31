@@ -69,7 +69,7 @@ export default function ProductCard() {
           <CardMedia
             component="img"
             height="194"
-            src={require(`../../../img/${p.image}`)}
+            src={require(`C:/Users/diogo/Desktop/Produtos/${p.image}`)}
             alt="Paella dish"
           />
           <CardContent>
