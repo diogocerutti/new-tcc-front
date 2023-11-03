@@ -15,10 +15,13 @@ import {
   MenuItem,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { getAllProducts, createProduct } from "../../api/product";
 import { getAllMeasures } from "../../api/measure_type";
 import { getAllCategories } from "../../api/product_category";
 import { useState, useCallback, useEffect } from "react";
+import UpdateModal from "./components/updateModal";
 
 export default function AdminTable() {
   const [products, setProducts] = useState([]);
@@ -37,6 +40,10 @@ export default function AdminTable() {
   const handleOpen = () => setOpen(true);
 
   const handleClose = () => setOpen(false);
+
+  const [openUpdate, setOpenUpdate] = useState(false);
+
+  const handleOpenUpdate = () => setOpenUpdate(true);
 
   const handleChangeName = (event) => {
     setName(event.target.value);
@@ -85,8 +92,8 @@ export default function AdminTable() {
     formData.append("price", price);
     formData.append("id_measure", id_measure);
     formData.append("id_category", id_category);
-    formData.append("image", image);
     formData.append("description", description);
+    formData.append("image", image);
 
     await createProduct(formData).then((res) => console.log(res));
   };
@@ -134,6 +141,7 @@ export default function AdminTable() {
               required
               fullWidth
               id="name"
+              name="name"
               label="Nome"
               onChange={handleChangeName}
             />
@@ -143,6 +151,7 @@ export default function AdminTable() {
               required
               fullWidth
               id="price"
+              name="price"
               label="Preço"
               onChange={handleChangePrice}
             />
@@ -151,7 +160,8 @@ export default function AdminTable() {
               margin="normal"
               required
               fullWidth
-              id="measure"
+              id="id_measure"
+              name="id_measure"
               label="Unidade de medida"
               value={id_measure}
               onChange={handleChangeMeasure}
@@ -167,7 +177,8 @@ export default function AdminTable() {
               margin="normal"
               required
               fullWidth
-              id="category"
+              id="id_category"
+              name="id_category"
               label="Categoria"
               value={id_category}
               onChange={handleChangeCategory}
@@ -183,6 +194,7 @@ export default function AdminTable() {
               margin="normal"
               fullWidth
               id="description"
+              name="description"
               label="Descrição"
               rows={2}
               multiline
@@ -193,6 +205,8 @@ export default function AdminTable() {
               onChange={handleChangeImage}
               type="file"
               accept="image/*"
+              id="image"
+              name="image"
             ></input>
             <Button
               type="submit"
@@ -207,6 +221,7 @@ export default function AdminTable() {
           </Box>
         </Box>
       </Modal>
+      <UpdateModal openUpdate={openUpdate} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -242,7 +257,14 @@ export default function AdminTable() {
                     style={{ height: "1.6vw", width: "1.6vw" }}
                   />
                 </TableCell>
-                <TableCell align="right">Opções</TableCell>
+                <TableCell align="right">
+                  <Button onClick={handleOpenUpdate}>
+                    <EditIcon />
+                  </Button>
+                  <Button>
+                    <DeleteIcon color="error" />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
