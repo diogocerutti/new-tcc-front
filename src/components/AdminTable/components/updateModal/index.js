@@ -1,19 +1,14 @@
 import { Button, Modal, Typography, Box } from "@mui/material";
-import { useState } from "react";
 
-export default function UpdateModal(openUpdate) {
-  const [open, setOpenUpdate] = useState(openUpdate);
-
-  const handleCloseUpdate = () => setOpenUpdate(false);
-
+export default function UpdateModal({ openUpdate, rowData, onCloseUpdate }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("oi");
+    console.log(rowData);
   };
 
   return (
-    <Modal open={open} onClose={handleCloseUpdate}>
+    <Modal open={openUpdate} onClose={onCloseUpdate}>
       <Box
         sx={{
           display: "flex",

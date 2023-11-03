@@ -27,13 +27,13 @@ export async function createProduct(data) {
 
 export async function updateProduct(data) {
   try {
-    const response = await api.post("/product", data, {
+    const response = await api.put(`/product/${data.id}`, data, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     if (response.status === 200) {
       return response.data;
     }
   } catch (error) {
-    console.log("ERRO AO CRIAR PRODUTO: ", error);
+    console.log("ERRO AO EDITAR PRODUTO: ", error);
   }
 }

@@ -27,6 +27,7 @@ export default function AdminTable() {
   const [products, setProducts] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [currentData, setCurrentData] = useState();
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState();
@@ -44,6 +45,8 @@ export default function AdminTable() {
   const [openUpdate, setOpenUpdate] = useState(false);
 
   const handleOpenUpdate = () => setOpenUpdate(true);
+
+  const handleCloseUpdate = () => setOpenUpdate(false);
 
   const handleChangeName = (event) => {
     setName(event.target.value);
@@ -221,7 +224,6 @@ export default function AdminTable() {
           </Box>
         </Box>
       </Modal>
-      <UpdateModal openUpdate={openUpdate} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -258,18 +260,24 @@ export default function AdminTable() {
                   />
                 </TableCell>
                 <TableCell align="right">
-                  <Button onClick={handleOpenUpdate}>
-                    <EditIcon />
-                  </Button>
-                  <Button>
-                    <DeleteIcon color="error" />
-                  </Button>
+                  <EditIcon
+                    onClick={() => {
+                      handleOpenUpdate();
+                      setCurrentData(row);
+                    }}
+                  />
+                  <DeleteIcon color="error" />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <UpdateModal
+        openUpdate={openUpdate}
+        rowData={currentData}
+        onCloseUpdate={handleCloseUpdate}
+      />
     </>
   );
 }
