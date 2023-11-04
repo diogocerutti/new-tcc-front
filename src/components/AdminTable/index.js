@@ -245,7 +245,20 @@ export default function AdminTable() {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.id}
+                  {row.id}{" "}
+                  {row.status === "true" ? (
+                    <img
+                      alt="status"
+                      src={require("../../images/true.png")}
+                      style={{ height: "1.1vw", width: "1.1vw" }}
+                    />
+                  ) : (
+                    <img
+                      alt="status"
+                      src={require("../../images/false.png")}
+                      style={{ height: "1.1vw", width: "1.1vw" }}
+                    />
+                  )}
                 </TableCell>
                 <TableCell align="right">{row.name}</TableCell>
                 <TableCell align="right">{row.price}</TableCell>
@@ -277,6 +290,8 @@ export default function AdminTable() {
         openUpdate={openUpdate}
         rowData={currentData}
         onCloseUpdate={handleCloseUpdate}
+        measures={measures}
+        categories={categories}
       />
     </>
   );

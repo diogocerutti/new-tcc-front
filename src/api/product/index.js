@@ -25,9 +25,9 @@ export async function createProduct(data) {
   }
 }
 
-export async function updateProduct(data) {
+export async function updateProduct(data, id) {
   try {
-    const response = await api.put(`/product/${data.id}`, data, {
+    const response = await api.put(`/product/${id}`, data, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     if (response.status === 200) {

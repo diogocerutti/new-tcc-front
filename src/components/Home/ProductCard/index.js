@@ -50,56 +50,59 @@ export default function ProductCard() {
 
   return (
     <Grid container columnGap={3}>
-      {products.map((p) => (
-        <Card key={p.id} sx={{ width: 345 }}>
-          <CardHeader
-            avatar={
-              <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                R
-              </Avatar>
-            }
-            action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
-            }
-            title={p.name}
-            subheader={p.category}
-          />
-          <CardMedia
-            component="img"
-            height="194"
-            src={require(`C:/Users/diogo/Desktop/Produtos/${p.image}`)}
-            alt="Paella dish"
-          />
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              R${p.price} {p.measure}
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton>
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
-              <ExpandMoreIcon />
-            </ExpandMore>
-          </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Typography>{p.description}</Typography>
-            </CardContent>
-          </Collapse>
-        </Card>
-      ))}
+      {products.map(
+        (p) =>
+          p.status === "true" && (
+            <Card key={p.id} sx={{ width: 345 }}>
+              <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                    R
+                  </Avatar>
+                }
+                action={
+                  <IconButton aria-label="settings">
+                    <MoreVertIcon />
+                  </IconButton>
+                }
+                title={p.name}
+                subheader={p.category}
+              />
+              <CardMedia
+                component="img"
+                height="194"
+                src={require(`C:/Users/diogo/Desktop/Produtos/${p.image}`)}
+                alt="Paella dish"
+              />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  R${p.price} {p.measure}
+                </Typography>
+              </CardContent>
+              <CardActions disableSpacing>
+                <IconButton aria-label="add to favorites">
+                  <FavoriteIcon />
+                </IconButton>
+                <IconButton aria-label="share">
+                  <ShareIcon />
+                </IconButton>
+                <ExpandMore
+                  expand={expanded}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
+                </ExpandMore>
+              </CardActions>
+              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                  <Typography>{p.description}</Typography>
+                </CardContent>
+              </Collapse>
+            </Card>
+          )
+      )}
     </Grid>
   );
 }
