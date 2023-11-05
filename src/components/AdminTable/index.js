@@ -17,7 +17,11 @@ import {
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { getAllProducts, createProduct } from "../../api/product";
+import {
+  getAllProducts,
+  createProduct,
+  deleteProduct,
+} from "../../api/product";
 import { getAllMeasures } from "../../api/measure_type";
 import { getAllCategories } from "../../api/product_category";
 import { useState, useCallback, useEffect } from "react";
@@ -279,7 +283,13 @@ export default function AdminTable() {
                       setCurrentData(row);
                     }}
                   />
-                  <DeleteIcon color="error" />
+                  <DeleteIcon
+                    color="error"
+                    onClick={async () => {
+                      alert("Produto removido!");
+                      deleteProduct(row.id);
+                    }}
+                  />
                 </TableCell>
               </TableRow>
             ))}

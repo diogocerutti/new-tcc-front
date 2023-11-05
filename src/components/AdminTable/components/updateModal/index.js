@@ -6,6 +6,8 @@ import {
   TextField,
   MenuItem,
   Switch,
+  FormGroup,
+  FormControlLabel,
 } from "@mui/material";
 import { updateProduct } from "../../../../api/product";
 import { useState, useEffect } from "react";
@@ -23,7 +25,7 @@ export default function UpdateModal({
   const [id_category, setId_category] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState();
-  const [status, setStatus] = useState(Boolean);
+  const [status, setStatus] = useState();
 
   const handleChangeName = (event) => {
     setName(event.target.value);
@@ -50,8 +52,11 @@ export default function UpdateModal({
   };
 
   const handleChangeStatus = (event) => {
-    setStatus(event.target.checked.valueOf());
-    console.log(status);
+    if (event.target.checked === true) {
+      setStatus("true");
+    } else {
+      setStatus("false");
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -77,7 +82,7 @@ export default function UpdateModal({
       setId_category(rowData.id_category);
       setDescription(rowData.description);
       setImage(rowData.image);
-      setStatus(Boolean(rowData.status));
+      setStatus(rowData.status);
     }
   }, [rowData]);
 
@@ -94,7 +99,12 @@ export default function UpdateModal({
         <Typography component="h1" variant="h5" color="black">
           Atualizar Produto
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{ mt: 1 }} /* encType="multipart/form-data" */
+        >
           <TextField
             type="text"
             margin="normal"
@@ -171,7 +181,12 @@ export default function UpdateModal({
             id="image"
             name="image"
           ></input>
-          <Switch checked={status} onClick={handleChangeStatus} />
+          <FormGroup>
+            <FormControlLabel
+              label="Ativo?"
+              control={<Switch onChange={handleChangeStatus} />}
+            />
+          </FormGroup>
           <Button
             type="submit"
             fullWidth

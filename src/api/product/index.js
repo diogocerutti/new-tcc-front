@@ -37,3 +37,16 @@ export async function updateProduct(data, id) {
     console.log("ERRO AO EDITAR PRODUTO: ", error);
   }
 }
+
+export async function deleteProduct(id) {
+  try {
+    const response = await api.delete(`/product/${id}`, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("ERRO AO EXCLUIR PRODUTO: ", error.response.data.msg);
+  }
+}
