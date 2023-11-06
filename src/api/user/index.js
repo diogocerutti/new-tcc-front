@@ -20,8 +20,12 @@ export const userLogin = async (request) => {
         expires: 1,
         path: "/",
         sameSite: "strict",
-      }); // your token
-      // setCookies("name", response.data.existingAdmin.name);  optional data
+      });
+      Cookies.set("user_id", response.data.existingUser.id, {
+        expires: 1,
+        path: "/",
+        sameSite: "strict",
+      });
       return response.data;
     }
   } catch (error) {
