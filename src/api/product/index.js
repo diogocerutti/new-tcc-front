@@ -12,6 +12,18 @@ export async function getAllProducts() {
   }
 }
 
+export async function getOneProduct(id) {
+  try {
+    const response = await api.get(`/product/${id}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
 export async function createProduct(data) {
   try {
     const response = await api.post("/product", data, {

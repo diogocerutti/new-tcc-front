@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-/* import { useState } from "react"; */
 import { userLogin } from "../../api/user";
 
 export default function UserLoginForm({ type }) {

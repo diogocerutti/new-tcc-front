@@ -113,11 +113,8 @@ export default function AdminTable() {
 
   return (
     <>
-      <Grid container justifyContent={"space-around"}>
-        <Grid item>Usuários</Grid>
-        <Grid item>Usuários Administradores</Grid>
+      <Grid container justifyContent={"space-between"}>
         <Grid item>Produtos</Grid>
-        <Grid item>Pedidos</Grid>
         <Grid item>
           <Button onClick={handleOpen}>
             <AddCircleIcon color="success" />

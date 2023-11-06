@@ -1,4 +1,3 @@
-import * as React from "react";
 import { styled } from "@mui/material/styles";
 import {
   Card,
@@ -19,6 +18,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { getAllProducts } from "../../../api/product";
 import { useState, useCallback, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -33,7 +33,7 @@ const ExpandMore = styled((props) => {
 
 export default function ProductCard() {
   const [products, setProducts] = useState([]);
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const handleGetProducts = useCallback(async () => {
     const response = await getAllProducts();
@@ -80,6 +80,9 @@ export default function ProductCard() {
                 </Typography>
               </CardContent>
               <CardActions disableSpacing>
+                <Link to={`/product/${p.id}`} state={p}>
+                  Aqui
+                </Link>
                 <IconButton aria-label="add to favorites">
                   <FavoriteIcon />
                 </IconButton>
