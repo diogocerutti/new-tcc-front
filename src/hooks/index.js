@@ -1,7 +1,15 @@
-/* import { AdminProvider } from "../api/admin"; */
+import React, { useContext, useState, createContext } from "react";
 
-const AppProvider = ({ children }) => (
-  <>{/* <AdminProvider>{children}</AdminProvider> */}</>
-);
+const AppContext = createContext();
 
-export default AppProvider;
+export const AppProvider = ({ children }) => {
+  const [cart, setCart] = useState([]);
+
+  const value = { cart, setCart };
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+};
+
+export function useAppContext() {
+  return useContext(AppContext);
+}

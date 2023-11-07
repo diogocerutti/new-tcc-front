@@ -3,10 +3,13 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { createOrder } from "../../api/order/index.js";
 import Cookies from "js-cookie";
+import { useAppContext } from "../../hooks/index.js";
 
 export function Product() {
   const id_user = Cookies.get("user_id");
   let state = useLocation();
+  /* let cart = []; */
+  const { cart, setCart } = useAppContext();
 
   const [quantity, setQuantity] = useState(1);
 
@@ -17,9 +20,22 @@ export function Product() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = [{ id_product: state.state.id, quantity: quantity }];
+    if (!cart.includes({ id_product: state.state.id, quantity: quantity })) {
+      const newList = cart.concat([
+        { id_product: state.state.id, quantity: quantity },
+      ]);
+      setCart(newList);
+    }
 
-    await createOrder(id_user, data);
+    console.log(cart);
+
+    /* cart.push({ id_product: state.state.id, quantity: quantity });
+
+    console.log(cart); */
+
+    /* const data = [{ id_product: state.state.id, quantity: quantity }]; */
+
+    /* await createOrder(id_user, data); */
   };
 
   return (
