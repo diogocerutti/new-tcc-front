@@ -1,17 +1,24 @@
 import { Grid, Typography, TextField, Button, Box } from "@mui/material";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { createOrder } from "../../api/order/index.js";
+import { createOrder, updateOrder } from "../../api/order/index.js";
 import Cookies from "js-cookie";
 import { useAppContext } from "../../hooks/index.js";
+import { useNavigate } from "react-router-dom";
 
 export function Product() {
+  let navigate = useNavigate();
   const id_user = Cookies.get("user_id");
   let state = useLocation();
-  /* let cart = []; */
-  const { cart, setCart } = useAppContext();
+  const cart = useCallback([], []);
+  const cartUpdate = useCallback([], []);
+  const { currentOrder, setCurrentOrder } = useAppContext();
 
   const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    console.log("USE EFFECT:", currentOrder);
+  }, [currentOrder]);
 
   const handleChangeQuantity = (event) => {
     setQuantity(event.target.value);
@@ -20,22 +27,18 @@ export function Product() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!cart.includes({ id_product: state.state.id, quantity: quantity })) {
-      const newList = cart.concat([
-        { id_product: state.state.id, quantity: quantity },
-      ]);
-      setCart(newList);
+    if (!currentOrder) {
+      cart.push({ id_product: state.state.id, quantity: Number(quantity) });
+      await createOrder(id_user, cart).then((res) => setCurrentOrder(res.id));
+    } else {
+      cartUpdate.push({
+        id_product: state.state.id,
+        quantity: Number(quantity),
+      });
+      await updateOrder(currentOrder, cartUpdate).then((res) =>
+        console.log(res)
+      );
     }
-
-    console.log(cart);
-
-    /* cart.push({ id_product: state.state.id, quantity: quantity });
-
-    console.log(cart); */
-
-    /* const data = [{ id_product: state.state.id, quantity: quantity }]; */
-
-    /* await createOrder(id_user, data); */
   };
 
   return (
