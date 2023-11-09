@@ -57,7 +57,7 @@ export function Cart() {
       <Grid item display="flex" justifyContent="space-evenly" width="100%">
         <Button sx={{ border: "solid" }}>Continuar comprando</Button>
         <Grid item>
-          <Typography>Total: {}</Typography>
+          <Typography>Total: ...</Typography>
           <Button sx={{ border: "solid" }}>Continuar para pagamento</Button>
         </Grid>
       </Grid>

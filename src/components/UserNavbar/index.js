@@ -14,12 +14,23 @@ export function UserNavbar() {
       }}
     >
       <Grid item display="flex" alignItems="center">
-        <Typography variant="h6">Don'Ana</Typography>
         <img
           src={require("../../images/Logo sem fundo.png")}
           alt="logo"
-          style={{ height: "3vw" }}
+          style={{ height: "4vw" }}
         />
+      </Grid>
+      <Grid
+        item
+        display="flex"
+        alignItems="center"
+        width="50%"
+        justifyContent="space-evenly"
+      >
+        <Typography>Menu</Typography>
+        <Typography>Sobre nós</Typography>
+        <Typography>Contato</Typography>
+        <Typography>Blog</Typography>
       </Grid>
 
       <IconButton color="inherit" onClick={() => navigate("/cart")}>
