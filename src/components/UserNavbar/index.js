@@ -2,7 +2,7 @@ import { Typography, IconButton, Toolbar, Grid } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router-dom";
 
-export function UserSidebar() {
+export function UserNavbar() {
   let navigate = useNavigate();
   return (
     <Toolbar

@@ -1,6 +1,6 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { AdminSidebar } from "../../components/AdminSidebar";
-import { UserSidebar } from "../../components/UserSidebar";
+import { UserNavbar } from "../../components/UserNavbar";
 import Cookies from "js-cookie";
 
 export const ProtectAdminRoutes = () => {
@@ -20,7 +20,7 @@ export const ProtectUserRoutes = () => {
 
   return cookie ? (
     <>
-      <UserSidebar />
+      <UserNavbar />
       <Outlet />
     </>
   ) : (
