@@ -1,24 +1,21 @@
 import { Grid, Typography, TextField, Button, Box } from "@mui/material";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect /* useCallback  */ } from "react";
 import { useLocation } from "react-router-dom";
-import { createOrder, updateOrder } from "../../api/order/index.js";
-import Cookies from "js-cookie";
 import { useAppContext } from "../../hooks/index.js";
-import { useNavigate } from "react-router-dom";
+/* import { createOrder, updateOrder } from "../../api/order/index.js"; */
+/* import Cookies from "js-cookie"; */
 
 export function Product() {
-  let navigate = useNavigate();
-  const id_user = Cookies.get("user_id");
   let state = useLocation();
-  const cart = useCallback([], []);
-  const cartUpdate = useCallback([], []);
-  const { currentOrder, setCurrentOrder } = useAppContext();
+  const { cart, setCart } = useAppContext();
+  /* const id_user = Cookies.get("user_id"); */
+  /* const items = useCallback([], []); */
 
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    console.log("USE EFFECT:", currentOrder);
-  }, [currentOrder]);
+    console.log("CART:", cart);
+  }, [cart]);
 
   const handleChangeQuantity = (event) => {
     setQuantity(event.target.value);
@@ -27,7 +24,62 @@ export function Product() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!currentOrder) {
+    if (
+      !cart.includes({
+        id_product: state.state.id,
+        name: state.state.name,
+        price: state.state.price,
+        image: state.state.image,
+        quantity: Number(quantity),
+      })
+    ) {
+      const newList = cart.concat([
+        {
+          id_product: state.state.id,
+          name: state.state.name,
+          price: state.state.price,
+          image: state.state.image,
+          quantity: Number(quantity),
+        },
+      ]);
+      const summed = newList.reduce((acc, cur) => {
+        const item =
+          acc.length > 0 &&
+          acc.find(({ id_product }) => id_product === cur.id_product);
+        if (item) {
+          item.quantity += cur.quantity;
+        } else
+          acc.push({
+            id_product: cur.id_product,
+            name: cur.name,
+            price: cur.price,
+            image: cur.image,
+            quantity: cur.quantity,
+          });
+        return acc;
+      }, []);
+      setCart(summed);
+      alert("Produto adicionado ao carrinho!");
+    }
+
+    /* items.push({ id_product: state.state.id, quantity: Number(quantity) });
+    console.log("ITEMS ANTES:", items); */
+
+    /* const newList = cart.concat(summed);
+
+    const summedCart = newList.reduce((acc, cur) => {
+      const item =
+        acc.length > 0 &&
+        acc.find(({ id_product }) => id_product === cur.id_product);
+      if (item) {
+        item.quantity += cur.quantity;
+      } else acc.push({ id_product: cur.id_product, quantity: cur.quantity });
+      return acc;
+    }, []);
+
+    setCart(summedCart);
+ */
+    /* if (!currentOrder) {
       cart.push({ id_product: state.state.id, quantity: Number(quantity) });
       await createOrder(id_user, cart).then((res) => setCurrentOrder(res.id));
     } else {
@@ -38,7 +90,7 @@ export function Product() {
       await updateOrder(currentOrder, cartUpdate).then((res) =>
         console.log(res)
       );
-    }
+    } */
   };
 
   return (

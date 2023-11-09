@@ -19,9 +19,10 @@ export const ProtectUserRoutes = () => {
   const cookie = Cookies.get("user");
 
   return cookie ? (
-    <UserSidebar>
+    <>
+      <UserSidebar />
       <Outlet />
-    </UserSidebar>
+    </>
   ) : (
     <Navigate to="/user/login" exact />
   ); // se "cookies.user" existir, vá para Outlet, se não, vá para /user/login
