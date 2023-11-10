@@ -58,7 +58,7 @@ export function Product() {
           });
         return acc;
       }, []);
-      setCart(summed);
+      await setCart(summed);
       alert("Produto adicionado ao carrinho!");
     }
 
@@ -107,12 +107,7 @@ export function Product() {
           <Typography variant="h3">{state.state.name}</Typography>
           <Typography variant="h5">{state.state.price}</Typography>
           <Typography>{state.state.description}</Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component="form" onSubmit={handleSubmit} noValidate>
             <TextField
               type="number"
               sx={{ width: "30%" }}

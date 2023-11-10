@@ -282,7 +282,7 @@ export default function AdminTable() {
                   />
                   <DeleteIcon
                     color="error"
-                    onClick={async () => {
+                    onClick={() => {
                       alert("Produto removido!");
                       deleteProduct(row.id);
                     }}

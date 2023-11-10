@@ -23,7 +23,7 @@ export default function ProductCard() {
   }, [handleGetProducts]);
 
   return (
-    <Grid container columnGap={3}>
+    <Grid container columnGap={3} justifyContent="center">
       {products.map(
         (p) =>
           p.status === "true" && (

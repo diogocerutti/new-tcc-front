@@ -8,12 +8,25 @@ import {
   TableBody,
   Typography,
   Button,
+  IconButton,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useAppContext } from "../../hooks";
+import { useEffect, useState } from "react";
 
 export function Cart() {
   const { cart } = useAppContext();
+  const [total, setTotal] = useState();
+
+  const handleRemoveProduct = (row) => {
+    alert("Produto removido.");
+    console.log(cart.splice(row, 1));
+  };
+
+  useEffect(() => {
+    setTotal(cart.reduce((acc, obj) => acc + obj.quantity * obj.price, 0));
+    console.log(cart);
+  }, [cart, total]);
 
   return (
     <Grid container>
@@ -35,7 +48,15 @@ export function Cart() {
               >
                 <TableCell align="left" width="30%">
                   <Grid item display="flex" alignItems="center">
-                    <ClearIcon />
+                    <IconButton
+                      color="error"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleRemoveProduct(row);
+                      }}
+                    >
+                      <ClearIcon />
+                    </IconButton>
                     <Typography variant="body1" color="#2EA2CC">
                       {row.name}
                     </Typography>
@@ -57,7 +78,7 @@ export function Cart() {
       <Grid item display="flex" justifyContent="space-evenly" width="100%">
         <Button sx={{ border: "solid" }}>Continuar comprando</Button>
         <Grid item>
-          <Typography>Total: ...</Typography>
+          <Typography>Total: {total}</Typography>
           <Button sx={{ border: "solid" }}>Continuar para pagamento</Button>
         </Grid>
       </Grid>
