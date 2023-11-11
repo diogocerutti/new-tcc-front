@@ -9,16 +9,43 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
 } from "@mui/material";
 import { useAppContext } from "../../hooks";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export function CheckoutForm() {
-  const { cart, setCart } = useAppContext();
+  let state = useLocation();
+  const { cart } = useAppContext();
+
+  const [products, setProducts] = useState([]);
+  const [id_payment_type, setId_payment_type] = useState("2");
+  const [date, setDate] = useState("");
+  const [hour, setHour] = useState("");
+
+  const handleChangeDate = (event) => {
+    setDate(event.target.value);
+  };
+
+  const handleChangeHour = (event) => {
+    setHour(event.target.value);
+  };
+
+  const handleChangePaymentId = (event) => {
+    setId_payment_type(event.target.value);
+  };
 
   useEffect(() => {
     console.log(cart);
-  }, [cart]);
+    console.log(id_payment_type);
+    console.log(date);
+    console.log(hour);
+  }, [cart, id_payment_type, date, hour]);
 
   return (
     <Grid
@@ -49,6 +76,7 @@ export function CheckoutForm() {
           id="date"
           name="date"
           label="Para quando?"
+          onChange={handleChangeDate}
         />
         <TextField
           type="time"
@@ -58,6 +86,7 @@ export function CheckoutForm() {
           id="time"
           name="time"
           label="Horário"
+          onChange={handleChangeHour}
         />
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -83,8 +112,25 @@ export function CheckoutForm() {
                 <TableCell align="right">{row.price * row.quantity}</TableCell>
               </TableRow>
             ))}
+            <TableRow>
+              <TableCell>Total</TableCell>
+              <TableCell></TableCell>
+              <TableCell align="right">{state.state.total}</TableCell>
+            </TableRow>
           </TableBody>
         </Table>
+        <FormControl>
+          <FormLabel id="payment_types">Tipo de Pagamento</FormLabel>
+          <RadioGroup
+            defaultValue="2"
+            name="payment_types"
+            value={id_payment_type}
+            onChange={handleChangePaymentId}
+          >
+            <FormControlLabel value="1" control={<Radio />} label="Crédito" />
+            <FormControlLabel value="2" control={<Radio />} label="Pix" />
+          </RadioGroup>
+        </FormControl>
         <Button
           type="submit"
           fullWidth
@@ -93,7 +139,7 @@ export function CheckoutForm() {
           color="success"
           sx={{ mt: 3, mb: 2 }}
         >
-          Cadastrar
+          Finalizar Pedido
         </Button>
       </Box>
     </Grid>

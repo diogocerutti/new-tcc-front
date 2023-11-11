@@ -93,7 +93,7 @@ export function Cart() {
                 sx={{ border: "solid" }}
                 onClick={(e) => {
                   e.preventDefault();
-                  navigate("/checkout");
+                  navigate("/checkout", { state: { total: total } });
                 }}
               >
                 Continuar para pagamento
