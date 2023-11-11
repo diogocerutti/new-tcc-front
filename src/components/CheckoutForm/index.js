@@ -16,14 +16,17 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { useAppContext } from "../../hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
+import { getUserAddress } from "../../api/user_address";
+import Cookies from "js-cookie";
 
 export function CheckoutForm() {
+  const id_user = Cookies.get("user_id");
   let state = useLocation();
   const { cart } = useAppContext();
 
-  const [products, setProducts] = useState([]);
+  const [user_address, setUser_address] = useState({});
   const [id_payment_type, setId_payment_type] = useState("2");
   const [date, setDate] = useState("");
   const [hour, setHour] = useState("");
@@ -40,12 +43,14 @@ export function CheckoutForm() {
     setId_payment_type(event.target.value);
   };
 
+  const handleGetUserAddress = useCallback(async () => {
+    const response = await getUserAddress(id_user);
+    setUser_address(response);
+  }, [id_user]);
+
   useEffect(() => {
-    console.log(cart);
-    console.log(id_payment_type);
-    console.log(date);
-    console.log(hour);
-  }, [cart, id_payment_type, date, hour]);
+    handleGetUserAddress();
+  }, [handleGetUserAddress]);
 
   return (
     <Grid
@@ -64,9 +69,9 @@ export function CheckoutForm() {
       >
         <Grid item border={"solid"} sx={{ borderWidth: 1 }}>
           <Typography variant="h6">Endereço</Typography>
-          <Typography>Rua</Typography>
-          <Typography>Cidade</Typography>
-          <Typography>CEP</Typography>
+          <Typography>Rua: {user_address.address}</Typography>
+          <Typography>Cidade: {user_address.city}</Typography>
+          <Typography>CEP: {user_address.postal_code}</Typography>
         </Grid>
         <TextField
           type="date"
@@ -115,7 +120,9 @@ export function CheckoutForm() {
             <TableRow>
               <TableCell>Total</TableCell>
               <TableCell></TableCell>
-              <TableCell align="right">{state.state.total}</TableCell>
+              <TableCell align="right">
+                {cart.length !== 0 ? state.state.total : ""}
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -138,6 +145,10 @@ export function CheckoutForm() {
           variant="contained"
           color="success"
           sx={{ mt: 3, mb: 2 }}
+          onClick={(e) => {
+            e.preventDefault();
+            alert("Pedido Enviado!");
+          }}
         >
           Finalizar Pedido
         </Button>
