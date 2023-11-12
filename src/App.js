@@ -9,6 +9,7 @@ import { CheckoutPage } from "./pages/Checkout/index.js";
 import { UserPanelPage } from "./pages/UserPanel/index.js";
 import { Orders } from "./components/UserPanel/Orders/index.js";
 import { Address } from "./components/UserPanel/Address/index.js";
+import { Details } from "./components/UserPanel/Details/index.js";
 import {
   ProtectAdminRoutes,
   ProtectUserRoutes,
@@ -25,6 +26,7 @@ function App() {
         <Route element={<UserPanelPage />}>
           <Route path="/user/orders" element={<Orders />} />
           <Route path="/user/address" element={<Address />} />
+          <Route path="/user/details" element={<Details />} />
         </Route>
       </Route>
       <Route element={<ProtectAdminRoutes />}>

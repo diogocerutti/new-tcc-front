@@ -15,11 +15,13 @@ export function UserNavbar() {
       }}
     >
       <Grid item display="flex" alignItems="center">
-        <img
-          src={require("../../images/Logo sem fundo.png")}
-          alt="logo"
-          style={{ height: "4vw" }}
-        />
+        <IconButton onClick={() => navigate("")}>
+          <img
+            src={require("../../images/Logo sem fundo.png")}
+            alt="logo"
+            style={{ height: "4vw" }}
+          />
+        </IconButton>
       </Grid>
       <Grid
         item
@@ -35,7 +37,7 @@ export function UserNavbar() {
       </Grid>
 
       <Grid item>
-        <IconButton color="inherit" /* onClick={() => navigate("/cart")} */>
+        <IconButton color="inherit" onClick={() => navigate("/user/orders")}>
           <PersonIcon />
         </IconButton>
         <IconButton color="inherit" onClick={() => navigate("/cart")}>

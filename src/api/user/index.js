@@ -50,3 +50,15 @@ export async function getAllUsers() {
     return [];
   }
 }
+
+export async function getOneUser(id) {
+  try {
+    const response = await api.get(`/user/${id}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
