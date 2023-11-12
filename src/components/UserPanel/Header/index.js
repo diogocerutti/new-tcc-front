@@ -1,10 +1,13 @@
+import Cookies from "js-cookie";
 import { Grid, Typography } from "@mui/material";
 
 export function Header() {
+  const username = Cookies.get("user_name");
+
   return (
     <Grid container justifyContent={"space-around"}>
       <Grid item>
-        <Typography>Olá, nome de usuário</Typography>
+        <Typography>Olá, {username}</Typography>
       </Grid>
       <Grid item>
         <Typography>Pedidos</Typography>
