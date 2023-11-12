@@ -4,7 +4,6 @@ export async function getUserOrders(id_user) {
   try {
     const response = await api.get(`/order/${id_user}`);
     if (response.status === 200) {
-      console.log(response.data);
       return response.data;
     }
   } catch (error) {

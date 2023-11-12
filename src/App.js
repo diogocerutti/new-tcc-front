@@ -7,6 +7,8 @@ import { ProductPage } from "./pages/Product/index.js";
 import { CartPage } from "./pages/Cart/index.js";
 import { CheckoutPage } from "./pages/Checkout/index.js";
 import { UserPanelPage } from "./pages/UserPanel/index.js";
+import { Orders } from "./components/UserPanel/Orders/index.js";
+import { Address } from "./components/UserPanel/Address/index.js";
 import {
   ProtectAdminRoutes,
   ProtectUserRoutes,
@@ -20,7 +22,10 @@ function App() {
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/panel" element={<UserPanelPage />} />
+        <Route element={<UserPanelPage />}>
+          <Route path="/user/orders" element={<Orders />} />
+          <Route path="/user/address" element={<Address />} />
+        </Route>
       </Route>
       <Route element={<ProtectAdminRoutes />}>
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />

@@ -1,15 +1,14 @@
-import { Orders } from "../../components/UserPanel/Orders";
 import { Header } from "../../components/UserPanel/Header";
+import { useLocation, Outlet } from "react-router-dom";
 import Cookies from "js-cookie";
 
 export function UserPanelPage() {
   const username = Cookies.get("user_name");
-  const id_user = Cookies.get("user_id");
-
+  const location = useLocation();
   return (
     <>
-      <Header username={username} />
-      <Orders id_user={id_user} />
+      <Header username={username} location={location} />
+      <Outlet />
     </>
   );
 }
