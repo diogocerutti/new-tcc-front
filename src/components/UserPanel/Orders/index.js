@@ -5,10 +5,26 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Grid,
+  IconButton,
+  Button,
 } from "@mui/material";
+import DescriptionIcon from "@mui/icons-material/Description";
 import { useState, useCallback, useEffect } from "react";
+import { getUserOrders } from "../../../api/order";
 
-export function Orders() {
+export function Orders({ id_user }) {
+  const [userOrders, setUserOrders] = useState({});
+
+  const handleGetUserOrders = useCallback(async () => {
+    const response = await getUserOrders(id_user);
+    setUserOrders(response);
+  }, [id_user]);
+
+  useEffect(() => {
+    handleGetUserOrders();
+  }, [handleGetUserOrders]);
+
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -17,19 +33,44 @@ export function Orders() {
             <TableCell align="left">Número</TableCell>
             <TableCell align="right">Data</TableCell>
             <TableCell align="right">Status</TableCell>
+            <TableCell align="right">Total</TableCell>
             <TableCell align="right">Opções</TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-            <TableCell align="left" width="30%">
-              Número
-            </TableCell>
-            <TableCell align="right">Data</TableCell>
-            <TableCell align="right">Status</TableCell>
-            <TableCell align="right">Opções</TableCell>
-          </TableRow>
+          {userOrders.map((row) => (
+            <TableRow
+              key={row.id}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell align="left" width="10%">
+                {row.id}
+              </TableCell>
+              <TableCell align="right">{row.date}</TableCell>
+              <TableCell align="right">
+                {row.order_status_relation.status}
+              </TableCell>
+              <TableCell align="right">{row.total}</TableCell>
+              <TableCell align="right" width={"10%"}>
+                <Grid>
+                  <IconButton>
+                    <DescriptionIcon />
+                  </IconButton>
+                  <Button
+                    color="warning"
+                    sx={{
+                      border: "solid",
+                      borderRadius: 0,
+                      borderWidth: "1px",
+                    }}
+                  >
+                    Avaliar
+                  </Button>
+                </Grid>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
