@@ -26,6 +26,11 @@ export const userLogin = async (request) => {
         path: "/",
         sameSite: "strict",
       });
+      Cookies.set("user_name", response.data.existingUser.name, {
+        expires: 1,
+        path: "/",
+        sameSite: "strict",
+      });
       return response.data;
     }
   } catch (error) {
