@@ -19,12 +19,14 @@ import { useAppContext } from "../../hooks";
 import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { getUserAddress } from "../../api/user_address";
+import { createOrder } from "../../api/order";
 import Cookies from "js-cookie";
 
 export function CheckoutForm() {
   const id_user = Cookies.get("user_id");
+  const { cart, setCart } = useAppContext();
   let state = useLocation();
-  const { cart } = useAppContext();
+  let data;
 
   const [user_address, setUser_address] = useState({});
   const [id_payment_type, setId_payment_type] = useState("2");
@@ -48,6 +50,28 @@ export function CheckoutForm() {
     setUser_address(response);
   }, [id_user]);
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const products = cart.map(function (i) {
+      return {
+        id_product: i.id_product,
+        quantity: i.quantity,
+      };
+    });
+
+    data = {
+      products: products,
+      id_payment_type: Number(id_payment_type),
+      date: date,
+      hour: hour,
+    };
+
+    console.log(data);
+
+    return await createOrder(id_user, data).then(setCart([]));
+  };
+
   useEffect(() => {
     handleGetUserAddress();
   }, [handleGetUserAddress]);
@@ -66,6 +90,7 @@ export function CheckoutForm() {
         component="form"
         noValidate
         sx={{ mt: 1, border: "solid", padding: 1 }}
+        onSubmit={handleSubmit}
       >
         <Grid item border={"solid"} sx={{ borderWidth: 1 }}>
           <Typography variant="h6">Endereço</Typography>
@@ -145,10 +170,6 @@ export function CheckoutForm() {
           variant="contained"
           color="success"
           sx={{ mt: 3, mb: 2 }}
-          onClick={(e) => {
-            e.preventDefault();
-            alert("Pedido Enviado!");
-          }}
         >
           Finalizar Pedido
         </Button>
