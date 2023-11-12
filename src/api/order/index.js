@@ -1,5 +1,17 @@
 import { api } from "..";
 
+export async function getUserOrders(id_user) {
+  try {
+    const response = await api.get(`/order/${id_user}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
 export async function createOrder(id_user, data) {
   try {
     const response = await api.post(`/order/${id_user}`, data);
