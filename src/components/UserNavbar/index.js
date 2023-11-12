@@ -1,5 +1,6 @@
 import { Typography, IconButton, Toolbar, Grid } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 
 export function UserNavbar() {
@@ -33,9 +34,14 @@ export function UserNavbar() {
         <Typography>Blog</Typography>
       </Grid>
 
-      <IconButton color="inherit" onClick={() => navigate("/cart")}>
-        <ShoppingCartIcon />
-      </IconButton>
+      <Grid item>
+        <IconButton color="inherit" /* onClick={() => navigate("/cart")} */>
+          <PersonIcon />
+        </IconButton>
+        <IconButton color="inherit" onClick={() => navigate("/cart")}>
+          <ShoppingCartIcon />
+        </IconButton>
+      </Grid>
     </Toolbar>
   );
 }
