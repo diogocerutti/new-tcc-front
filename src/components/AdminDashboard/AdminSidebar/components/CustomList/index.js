@@ -12,6 +12,9 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import PersonIcon from "@mui/icons-material/Person";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import CategoryIcon from "@mui/icons-material/Category";
+import ScaleIcon from "@mui/icons-material/Scale";
+import AlarmIcon from "@mui/icons-material/Alarm";
+import PaidIcon from "@mui/icons-material/Paid";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
@@ -25,14 +28,23 @@ export function CustomList({ location }) {
     products: location.pathname === "/admin/products" ? "#00ADEF" : "white",
     categories: location.pathname === "/admin/categories" ? "#00ADEF" : "white",
     measures: location.pathname === "/admin/measures" ? "#00ADEF" : "white",
+    orderStatus:
+      location.pathname === "/admin/order-status" ? "#00ADEF" : "white",
+    paymentTypes:
+      location.pathname === "/admin/payment-types" ? "#00ADEF" : "white",
     users: location.pathname === "/admin/users" ? "#00ADEF" : "white",
     admin: location.pathname === "/admin/admins" ? "#00ADEF" : "white",
   };
 
-  const [open, setOpen] = useState(true);
+  const [open0, setOpen0] = useState(true);
+  const [open1, setOpen1] = useState(true);
 
-  const handleClick = () => {
-    setOpen(!open);
+  const handleClick0 = () => {
+    setOpen0(!open0);
+  };
+
+  const handleClick1 = () => {
+    setOpen1(!open1);
   };
 
   return (
@@ -41,20 +53,61 @@ export function CustomList({ location }) {
         (text, index) => (
           <ListItem key={text} disablePadding>
             {index === 0 && (
-              <ListItemButton
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate("/admin/orders");
-                }}
-                sx={{ color: currentColor.orders }}
-              >
-                <ListItemIcon>
-                  <RoomServiceIcon
-                    style={{ fontSize: "40px", color: currentColor.orders }}
-                  />
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
+              <Grid container>
+                <Grid item display={"flex"} alignItems={"center"}>
+                  <ListItemButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/admin/orders");
+                    }}
+                    sx={{ color: currentColor.orders }}
+                  >
+                    <ListItemIcon>
+                      <RoomServiceIcon
+                        style={{ fontSize: "40px", color: currentColor.orders }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                  {open0 ? (
+                    <ExpandLess onClick={handleClick0} />
+                  ) : (
+                    <ExpandMore onClick={handleClick0} />
+                  )}
+                </Grid>
+                <Collapse in={open0} timeout="auto" unmountOnExit>
+                  <List component="div">
+                    <ListItemButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/admin/order-status");
+                      }}
+                      sx={{ color: currentColor.orderStatus }}
+                    >
+                      <ListItemIcon>
+                        <AlarmIcon
+                          style={{ color: currentColor.orderStatus }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Status" />
+                    </ListItemButton>
+                    <ListItemButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/admin/payment-types");
+                      }}
+                      sx={{ color: currentColor.paymentTypes }}
+                    >
+                      <ListItemIcon>
+                        <PaidIcon
+                          style={{ color: currentColor.paymentTypes }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Tipos de Pagamento" />
+                    </ListItemButton>
+                  </List>
+                </Collapse>
+              </Grid>
             )}
             {index === 1 && (
               <Grid container>
@@ -76,13 +129,13 @@ export function CustomList({ location }) {
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItemButton>
-                  {open ? (
-                    <ExpandLess onClick={handleClick} />
+                  {open1 ? (
+                    <ExpandLess onClick={handleClick1} />
                   ) : (
-                    <ExpandMore onClick={handleClick} />
+                    <ExpandMore onClick={handleClick1} />
                   )}
                 </Grid>
-                <Collapse in={open} timeout="auto" unmountOnExit>
+                <Collapse in={open1} timeout="auto" unmountOnExit>
                   <List component="div">
                     <ListItemButton
                       onClick={(e) => {
@@ -106,9 +159,7 @@ export function CustomList({ location }) {
                       sx={{ color: currentColor.measures }}
                     >
                       <ListItemIcon>
-                        <CategoryIcon
-                          style={{ color: currentColor.measures }}
-                        />
+                        <ScaleIcon style={{ color: currentColor.measures }} />
                       </ListItemIcon>
                       <ListItemText primary="Unidades de Medida" />
                     </ListItemButton>
