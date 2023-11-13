@@ -21,11 +21,21 @@ export function Address() {
     <>
       {userAddress ? (
         <Grid container justifyContent={"center"}>
-          <Box component="form" noValidate width={"50%"} marginTop={7}>
+          <Box
+            component="form"
+            noValidate
+            sx={{ backgroundColor: "#FFF" }}
+            rowGap={2}
+            display={"flex"}
+            flexDirection={"column"}
+            marginTop={5}
+            width={"50%"}
+            padding={3}
+            borderRadius={3}
+          >
             <Typography variant="h5">Endereço</Typography>
             <TextField
               type="text"
-              margin="normal"
               required
               fullWidth
               id="address"
@@ -35,7 +45,6 @@ export function Address() {
             />
             <TextField
               type="text"
-              margin="normal"
               required
               fullWidth
               id="city"
@@ -45,7 +54,6 @@ export function Address() {
             />
             <TextField
               type="text"
-              margin="normal"
               required
               fullWidth
               id="postal_code"
@@ -60,7 +68,6 @@ export function Address() {
                 id="alterar"
                 variant="contained"
                 color="primary"
-                sx={{ mt: 3, mb: 2 }}
               >
                 Salvar Endereço
               </Button>

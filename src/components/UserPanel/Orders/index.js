@@ -31,7 +31,7 @@ export function Orders() {
   return (
     <>
       {userOrders.length !== 0 ? (
-        <TableContainer>
+        <TableContainer sx={{ backgroundColor: "#FFF" }}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>

@@ -58,12 +58,11 @@ export function Cards() {
             label="CVV"
           />
         </Grid>
-
         <Button
           id="enviar"
           variant="contained"
           color="primary"
-          sx={{ display: "flex", width: "50%", alignSelf: "center" }}
+          sx={{ display: "flex", width: "40%", alignSelf: "center" }}
         >
           Salvar Cartão
         </Button>

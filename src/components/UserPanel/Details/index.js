@@ -21,11 +21,21 @@ export function Details() {
     <>
       {userDetails ? (
         <Grid container justifyContent={"center"}>
-          <Box component="form" noValidate width={"50%"} marginTop={7}>
+          <Box
+            component="form"
+            noValidate
+            sx={{ backgroundColor: "#FFF" }}
+            rowGap={2}
+            display={"flex"}
+            flexDirection={"column"}
+            marginTop={5}
+            width={"50%"}
+            padding={3}
+            borderRadius={3}
+          >
             <Typography variant="h5">Detalhes da Conta</Typography>
             <TextField
               type="text"
-              margin="normal"
               required
               fullWidth
               id="name"
@@ -35,7 +45,6 @@ export function Details() {
             />
             <TextField
               type="email"
-              margin="normal"
               required
               fullWidth
               id="email"
@@ -45,7 +54,6 @@ export function Details() {
             />
             <TextField
               type="tel"
-              margin="normal"
               required
               fullWidth
               id="phone"
@@ -55,7 +63,6 @@ export function Details() {
             />
             <TextField
               type="password"
-              margin="normal"
               required
               fullWidth
               id="currentPassword"
@@ -64,7 +71,6 @@ export function Details() {
             />
             <TextField
               type="password"
-              margin="normal"
               required
               fullWidth
               id="newPassword"
@@ -73,7 +79,6 @@ export function Details() {
             />
             <TextField
               type="password"
-              margin="normal"
               required
               fullWidth
               id="confirmPassword"
@@ -86,7 +91,6 @@ export function Details() {
                 id="alterar"
                 variant="contained"
                 color="primary"
-                sx={{ mt: 3, mb: 2 }}
               >
                 Salvar Alterações
               </Button>
