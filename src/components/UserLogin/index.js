@@ -1,20 +1,7 @@
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import { Button, TextField, Box, Typography, Grid } from "@mui/material";
 import { userLogin } from "../../api/user";
 
 export default function UserLoginForm({ type }) {
-  /* const [loading, setLoading] = useState(false); */
-
   const handleSubmit = (event) => {
     if (type === "login") {
       event.preventDefault();
@@ -30,47 +17,42 @@ export default function UserLoginForm({ type }) {
           console.log("DEU ERRO!", res.response.data.msg); // mensagem de erro do BACK
         } else {
           console.log("DEU CERTO!", res);
-          //router.refresh();
-          //router.push("/protected");
         }
       });
-
-      /* loginAdmin(payload).then((res) => {
-        // ele vai sempre entrar no .then(), mesmo que haja erro (não sei pq)
-        if (res.name === "AxiosError") {
-          console.log("DEU ERRO!", res.response.data.msg); // mensagem de erro do BACK
-          setLoading(false);
-        } else {
-          console.log("DEU CERTO!", res);
-          //router.refresh();
-          //router.push("/protected");
-        }
-      }); */
     } else {
       console.log("register!!");
     }
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ backgroundColor: "white" }}>
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+    <Grid container component="main" maxWidth="xs" justifyContent={"center"}>
+      <Grid
+        item
+        display={"flex"}
+        width={"50%"}
+        justifyContent={"space-between"}
+        marginTop={8}
+        columnGap={2}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5" color="black">
-          LOGIN USUÁRIO
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          width={"50%"}
+          height={"50%"}
+          justifyContent={"space-between"}
+          display={"flex"}
+          flexDirection={"column"}
+          padding={2}
+          borderRadius={2}
+          sx={{
+            backgroundColor: "#FFF",
+          }}
+        >
+          <Typography component="h1" variant="h5" color="black">
+            Login
+          </Typography>
           <TextField
-            margin="normal"
             required
             fullWidth
             id="email"
@@ -80,41 +62,93 @@ export default function UserLoginForm({ type }) {
             autoFocus
           />
           <TextField
-            margin="normal"
             required
             fullWidth
             id="password"
-            label="Password"
+            label="Senha"
             name="password"
             type="password"
             autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ width: "65%", alignSelf: "center" }}
           >
-            Sign In
+            Entrar
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
-      </Box>
-    </Container>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          width={"50%"}
+          justifyContent={"space-between"}
+          display={"flex"}
+          flexDirection={"column"}
+          padding={2}
+          borderRadius={2}
+          height={"auto"}
+          rowGap={3}
+          sx={{
+            backgroundColor: "#FFF",
+          }}
+        >
+          <Typography component="h1" variant="h5" color="black">
+            Cadastre-se
+          </Typography>
+          <TextField
+            required
+            fullWidth
+            id="name"
+            label="Nome"
+            name="name"
+            autoFocus
+          />
+          <TextField
+            required
+            fullWidth
+            id="emailRegister"
+            label="Email"
+            name="emailRegister"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            required
+            fullWidth
+            id="passwordRegister"
+            label="Senha"
+            name="passwordRegister"
+            type="password"
+          />
+          <TextField
+            required
+            fullWidth
+            id="confirmPassword"
+            label="Confirmar Senha"
+            name="confirmPassword"
+            type="password"
+          />
+          <TextField
+            required
+            fullWidth
+            id="phone"
+            label="Telefone"
+            name="phone"
+            type="tel"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ width: "65%", alignSelf: "center" }}
+          >
+            Cadastre-se
+          </Button>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }
