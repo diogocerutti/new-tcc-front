@@ -32,7 +32,7 @@ export default function AdminLoginForm({ type }) {
         } else {
           console.log("DEU CERTO!", res);
           alert("Logado!");
-          return navigate("/admin/dashboard");
+          return navigate("/admin/products");
         }
       });
     } else {

@@ -30,7 +30,7 @@ function App() {
         </Route>
       </Route>
       <Route element={<ProtectAdminRoutes />}>
-        <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+        <Route path="/admin/products" element={<AdminDashboardPage />} />
       </Route>
       <Route path="/" element={<HomePage />} />
       <Route path="/user/login" element={<UserLoginPage />} />

@@ -1,23 +1,20 @@
-import * as React from "react";
+import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
+import {
+  Box,
+  Drawer,
+  CssBaseline,
+  Toolbar,
+  Typography,
+  Divider,
+  IconButton,
+} from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import { CustomList } from "./components/CustomList/index.js";
+import { useLocation } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -67,8 +64,9 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export function AdminSidebar({ children }) {
+  const location = useLocation();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -103,6 +101,12 @@ export function AdminSidebar({ children }) {
         </Toolbar>
       </AppBar>
       <Drawer
+        PaperProps={{
+          sx: {
+            backgroundColor: "#373A3F",
+            color: "white",
+          },
+        }}
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -125,20 +129,7 @@ export function AdminSidebar({ children }) {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          {["Produtos", "Starred", "Send email", "Drafts"].map(
-            (text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            )
-          )}
-        </List>
+        <CustomList location={location} />
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
