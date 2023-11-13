@@ -120,7 +120,7 @@ export function AdminSidebar({ children }) {
         open={open}
       >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={handleDrawerClose} color="inherit">
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (

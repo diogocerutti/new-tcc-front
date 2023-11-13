@@ -1,5 +1,6 @@
 import { AdminLoginPage } from "./pages/AdminLogin";
 import { ProductsPage } from "./pages/AdminDashboard/Products/index.js";
+import { CategoriesPage } from "./pages/AdminDashboard/Categories/index.js";
 import { OrdersPage } from "./pages/AdminDashboard/Orders/index.js";
 import { UsersPage } from "./pages/AdminDashboard/Users/index.js";
 import { AdminsPage } from "./pages/AdminDashboard/Admins/index.js";
@@ -34,6 +35,7 @@ function App() {
       </Route>
       <Route element={<ProtectAdminRoutes />}>
         <Route path="/admin/products" element={<ProductsPage />} />
+        <Route path="/admin/categories" element={<CategoriesPage />} />
         <Route path="/admin/orders" element={<OrdersPage />} />
         <Route path="/admin/users" element={<UsersPage />} />
         <Route path="/admin/admins" element={<AdminsPage />} />
