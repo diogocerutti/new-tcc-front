@@ -13,6 +13,7 @@ import {
   Box,
   TextField,
   MenuItem,
+  IconButton,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -113,13 +114,11 @@ export default function Products() {
 
   return (
     <>
-      <Grid container justifyContent={"space-between"}>
+      <Grid container justifyContent={"space-between"} alignItems={"center"}>
         <Typography variant="h5">Produtos</Typography>
-        <Grid item>
-          <Button onClick={handleOpen}>
-            <AddCircleIcon color="success" />
-          </Button>
-        </Grid>
+        <IconButton onClick={handleOpen}>
+          <AddCircleIcon color="success" sx={{ fontSize: "3vw" }} />
+        </IconButton>
       </Grid>
       <Modal open={open} onClose={handleClose}>
         <Box

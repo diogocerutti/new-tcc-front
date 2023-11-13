@@ -24,6 +24,7 @@ export function CustomList({ location }) {
     orders: location.pathname === "/admin/orders" ? "#00ADEF" : "white",
     products: location.pathname === "/admin/products" ? "#00ADEF" : "white",
     categories: location.pathname === "/admin/categories" ? "#00ADEF" : "white",
+    measures: location.pathname === "/admin/measures" ? "#00ADEF" : "white",
     users: location.pathname === "/admin/users" ? "#00ADEF" : "white",
     admin: location.pathname === "/admin/admins" ? "#00ADEF" : "white",
   };
@@ -97,9 +98,17 @@ export function CustomList({ location }) {
                       </ListItemIcon>
                       <ListItemText primary="Categorias" />
                     </ListItemButton>
-                    <ListItemButton>
+                    <ListItemButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/admin/measures");
+                      }}
+                      sx={{ color: currentColor.measures }}
+                    >
                       <ListItemIcon>
-                        <CategoryIcon style={{ color: "white" }} />
+                        <CategoryIcon
+                          style={{ color: currentColor.measures }}
+                        />
                       </ListItemIcon>
                       <ListItemText primary="Unidades de Medida" />
                     </ListItemButton>
