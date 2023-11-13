@@ -1,6 +1,8 @@
 import { AdminLoginPage } from "./pages/AdminLogin";
 import { ProductsPage } from "./pages/AdminDashboard/Products/index.js";
 import { OrdersPage } from "./pages/AdminDashboard/Orders/index.js";
+import { UsersPage } from "./pages/AdminDashboard/Users/index.js";
+import { AdminsPage } from "./pages/AdminDashboard/Admins/index.js";
 import { HomePage } from "./pages/Home";
 import { NotFound } from "./pages/NotFound/index.js";
 import { UserLoginPage } from "./pages/UserLogin";
@@ -33,6 +35,8 @@ function App() {
       <Route element={<ProtectAdminRoutes />}>
         <Route path="/admin/products" element={<ProductsPage />} />
         <Route path="/admin/orders" element={<OrdersPage />} />
+        <Route path="/admin/users" element={<UsersPage />} />
+        <Route path="/admin/admins" element={<AdminsPage />} />
       </Route>
       <Route path="/" element={<HomePage />} />
       <Route path="/user/login" element={<UserLoginPage />} />
