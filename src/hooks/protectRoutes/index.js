@@ -1,5 +1,5 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { AdminSidebar } from "../../components/AdminSidebar";
+import { AdminSidebar } from "../../components/AdminDashboard/AdminSidebar";
 import { UserNavbar } from "../../components/UserNavbar";
 import Cookies from "js-cookie";
 

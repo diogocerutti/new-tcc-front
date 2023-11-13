@@ -114,7 +114,7 @@ export default function Products() {
   return (
     <>
       <Grid container justifyContent={"space-between"}>
-        <Grid item>Produtos</Grid>
+        <Typography variant="h5">Produtos</Typography>
         <Grid item>
           <Button onClick={handleOpen}>
             <AddCircleIcon color="success" />

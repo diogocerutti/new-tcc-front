@@ -94,7 +94,7 @@ export function AdminSidebar({ children }) {
             Painel Administrador
           </Typography>
           <img
-            src={require("../../images/Logo sem fundo.png")}
+            src={require("../../../images/Logo sem fundo.png")}
             alt="logo"
             style={{ height: "3vw" }}
           />

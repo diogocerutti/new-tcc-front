@@ -9,8 +9,10 @@ import RoomServiceIcon from "@mui/icons-material/RoomService";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import PersonIcon from "@mui/icons-material/Person";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import { useNavigate } from "react-router-dom";
 
 export function CustomList({ location }) {
+  let navigate = useNavigate();
   const currentColor = {
     orders: location.pathname === "/admin/orders" ? "#00ADEF" : "white",
     products: location.pathname === "/admin/products" ? "#00ADEF" : "white",
@@ -26,7 +28,7 @@ export function CustomList({ location }) {
               <ListItemButton
                 onClick={(e) => {
                   e.preventDefault();
-                  alert("oi");
+                  navigate("/admin/orders");
                 }}
                 sx={{ color: currentColor.orders }}
               >
@@ -42,7 +44,7 @@ export function CustomList({ location }) {
               <ListItemButton
                 onClick={(e) => {
                   e.preventDefault();
-                  alert("oi");
+                  navigate("/admin/products");
                 }}
                 sx={{ color: currentColor.products }}
               >
@@ -58,7 +60,7 @@ export function CustomList({ location }) {
               <ListItemButton
                 onClick={(e) => {
                   e.preventDefault();
-                  alert("oi");
+                  navigate("/admin/users");
                 }}
                 sx={{ color: currentColor.users }}
               >
@@ -74,7 +76,7 @@ export function CustomList({ location }) {
               <ListItemButton
                 onClick={(e) => {
                   e.preventDefault();
-                  alert("oi");
+                  navigate("/admin/admins");
                 }}
                 sx={{ color: currentColor.admin }}
               >
