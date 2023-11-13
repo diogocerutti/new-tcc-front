@@ -1,15 +1,15 @@
 import { AdminLoginPage } from "./pages/AdminLogin";
-import { AdminDashboardPage } from "./pages/AdminDashboard";
+import { ProductsPage } from "./pages/AdminDashboard/Products/index.js";
 import { HomePage } from "./pages/Home";
 import { NotFound } from "./pages/NotFound/index.js";
 import { UserLoginPage } from "./pages/UserLogin";
 import { ProductPage } from "./pages/Product/index.js";
 import { CartPage } from "./pages/Cart/index.js";
 import { CheckoutPage } from "./pages/Checkout/index.js";
-import { UserPanelPage } from "./pages/UserPanel/index.js";
-import { Orders } from "./components/UserPanel/Orders/index.js";
-import { Address } from "./components/UserPanel/Address/index.js";
-import { Details } from "./components/UserPanel/Details/index.js";
+import { UserPanelHeader } from "./components/UserPanel/Header/index.js";
+import { UserOrdersPage } from "./pages/UserPanel/Orders/index.js";
+import { UserAddressPage } from "./pages/UserPanel/Address/index.js";
+import { UserDetailsPage } from "./pages/UserPanel/Details/index.js";
 import {
   ProtectAdminRoutes,
   ProtectUserRoutes,
@@ -23,14 +23,14 @@ function App() {
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
-        <Route element={<UserPanelPage />}>
-          <Route path="/user/orders" element={<Orders />} />
-          <Route path="/user/address" element={<Address />} />
-          <Route path="/user/details" element={<Details />} />
+        <Route element={<UserPanelHeader />}>
+          <Route path="/user/orders" element={<UserOrdersPage />} />
+          <Route path="/user/address" element={<UserAddressPage />} />
+          <Route path="/user/details" element={<UserDetailsPage />} />
         </Route>
       </Route>
       <Route element={<ProtectAdminRoutes />}>
-        <Route path="/admin/products" element={<AdminDashboardPage />} />
+        <Route path="/admin/products" element={<ProductsPage />} />
       </Route>
       <Route path="/" element={<HomePage />} />
       <Route path="/user/login" element={<UserLoginPage />} />

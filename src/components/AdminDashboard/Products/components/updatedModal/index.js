@@ -9,7 +9,7 @@ import {
   FormGroup,
   FormControlLabel,
 } from "@mui/material";
-import { updateProduct } from "../../../../api/product";
+import { updateProduct } from "../../../../../api/product/index.js";
 import { useState, useEffect } from "react";
 
 export default function UpdateModal({

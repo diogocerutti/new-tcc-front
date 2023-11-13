@@ -21,13 +21,13 @@ import {
   getAllProducts,
   createProduct,
   deleteProduct,
-} from "../../api/product";
-import { getAllMeasures } from "../../api/measure_type";
-import { getAllCategories } from "../../api/product_category";
+} from "../../../api/product/index.js";
+import { getAllMeasures } from "../../../api/measure_type/index.js";
+import { getAllCategories } from "../../../api/product_category/index.js";
 import { useState, useCallback, useEffect } from "react";
-import UpdateModal from "./components/updateModal";
+import UpdateModal from "./components/updatedModal/index.js";
 
-export default function AdminTable() {
+export default function Products() {
   const [products, setProducts] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -250,13 +250,13 @@ export default function AdminTable() {
                   {row.status === "true" ? (
                     <img
                       alt="status"
-                      src={require("../../images/true.png")}
+                      src={require("../../../images/true.png")}
                       style={{ height: "1.1vw", width: "1.1vw" }}
                     />
                   ) : (
                     <img
                       alt="status"
-                      src={require("../../images/false.png")}
+                      src={require("../../../images/false.png")}
                       style={{ height: "1.1vw", width: "1.1vw" }}
                     />
                   )}
@@ -282,9 +282,9 @@ export default function AdminTable() {
                   />
                   <DeleteIcon
                     color="error"
-                    onClick={() => {
+                    onClick={async () => {
                       alert("Produto removido!");
-                      deleteProduct(row.id);
+                      await deleteProduct(row.id);
                     }}
                   />
                 </TableCell>
