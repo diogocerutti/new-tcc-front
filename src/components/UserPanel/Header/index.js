@@ -7,7 +7,11 @@ export function UserPanelHeader() {
   const location = useLocation();
   return (
     <>
-      <Grid container justifyContent={"space-around"}>
+      <Grid
+        container
+        justifyContent={"space-around"}
+        sx={{ backgroundColor: "#FFF" }}
+      >
         <Grid item>
           <Typography>Olá, {username}</Typography>
         </Grid>
@@ -40,6 +44,15 @@ export function UserPanelHeader() {
             href="/user/details"
           >
             Detalhes da conta
+          </Link>
+        </Grid>
+        <Grid item>
+          <Link
+            color={location.pathname === "/user/cards" ? "#00ADEF" : "inherit"}
+            underline="hover"
+            href="/user/cards"
+          >
+            Cartões
           </Link>
         </Grid>
         <Grid item>

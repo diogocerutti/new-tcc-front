@@ -17,6 +17,7 @@ import { UserPanelHeader } from "./components/UserPanel/Header/index.js";
 import { UserOrdersPage } from "./pages/UserPanel/Orders/index.js";
 import { UserAddressPage } from "./pages/UserPanel/Address/index.js";
 import { UserDetailsPage } from "./pages/UserPanel/Details/index.js";
+import { UserCardsPage } from "./pages/UserPanel/Cards/index.js";
 import {
   ProtectAdminRoutes,
   ProtectUserRoutes,
@@ -34,6 +35,7 @@ function App() {
           <Route path="/user/orders" element={<UserOrdersPage />} />
           <Route path="/user/address" element={<UserAddressPage />} />
           <Route path="/user/details" element={<UserDetailsPage />} />
+          <Route path="/user/cards" element={<UserCardsPage />} />
         </Route>
       </Route>
       <Route element={<ProtectAdminRoutes />}>
