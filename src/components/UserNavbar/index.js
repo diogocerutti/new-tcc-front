@@ -64,7 +64,6 @@ export function UserNavbar() {
         </IconButton>
         <Typography>Blog</Typography>
       </Grid>
-
       <Grid item>
         <IconButton
           color="inherit"
