@@ -1,4 +1,4 @@
-import { AdminLoginPage } from "./pages/AdminLogin";
+import { AdminLoginPage } from "./pages/AdminLogin/index.js";
 import { ProductsPage } from "./pages/AdminDashboard/Products/index.js";
 import { CategoriesPage } from "./pages/AdminDashboard/Categories/index.js";
 import { MeasuresPage } from "./pages/AdminDashboard/Measures/index.js";
@@ -7,9 +7,10 @@ import { PaymentTypesPage } from "./pages/AdminDashboard/PaymentTypes/index.js";
 import { OrdersPage } from "./pages/AdminDashboard/Orders/index.js";
 import { UsersPage } from "./pages/AdminDashboard/Users/index.js";
 import { AdminsPage } from "./pages/AdminDashboard/Admins/index.js";
-import { HomePage } from "./pages/Home";
+import { HomePage } from "./pages/Home/index.js";
+import { MenuPage } from "./pages/Home/Menu/index.js";
 import { NotFound } from "./pages/NotFound/index.js";
-import { UserLoginPage } from "./pages/UserLogin";
+import { UserLoginPage } from "./pages/UserLogin/index.js";
 import { ProductPage } from "./pages/Product/index.js";
 import { CartPage } from "./pages/Cart/index.js";
 import { CheckoutPage } from "./pages/Checkout/index.js";
@@ -49,6 +50,7 @@ function App() {
         <Route path="/admin/admins" element={<AdminsPage />} />
       </Route>
       <Route path="/" element={<HomePage />} />
+      <Route path="/menu" element={<MenuPage />} />
       <Route path="/user/login" element={<UserLoginPage />} />
       <Route path="/admin/login" element={<AdminLoginPage />} />
       <Route path="*" element={<NotFound />} />

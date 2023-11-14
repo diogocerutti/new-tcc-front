@@ -15,7 +15,12 @@ export function UserNavbar() {
       }}
     >
       <Grid item display="flex" alignItems="center">
-        <IconButton onClick={() => navigate("")}>
+        <IconButton
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("");
+          }}
+        >
           <img
             src={require("../../images/Logo sem fundo.png")}
             alt="logo"
@@ -30,17 +35,37 @@ export function UserNavbar() {
         width="50%"
         justifyContent="space-evenly"
       >
-        <Typography>Menu</Typography>
+        <IconButton
+          color="inherit"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/menu");
+          }}
+        >
+          <Typography>Menu</Typography>
+        </IconButton>
         <Typography>Sobre nós</Typography>
         <Typography>Contato</Typography>
         <Typography>Blog</Typography>
       </Grid>
 
       <Grid item>
-        <IconButton color="inherit" onClick={() => navigate("/user/orders")}>
+        <IconButton
+          color="inherit"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/user/orders");
+          }}
+        >
           <PersonIcon />
         </IconButton>
-        <IconButton color="inherit" onClick={() => navigate("/cart")}>
+        <IconButton
+          color="inherit"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/cart");
+          }}
+        >
           <ShoppingCartIcon />
         </IconButton>
       </Grid>
