@@ -18,7 +18,7 @@ export function UserNavbar() {
         <IconButton
           onClick={(e) => {
             e.preventDefault();
-            navigate("");
+            navigate("/");
           }}
         >
           <img
@@ -44,8 +44,24 @@ export function UserNavbar() {
         >
           <Typography>Menu</Typography>
         </IconButton>
-        <Typography>Sobre nós</Typography>
-        <Typography>Contato</Typography>
+        <IconButton
+          color="inherit"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/about");
+          }}
+        >
+          <Typography>Sobre nós</Typography>
+        </IconButton>
+        <IconButton
+          color="inherit"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/contact");
+          }}
+        >
+          <Typography>Contato</Typography>
+        </IconButton>
         <Typography>Blog</Typography>
       </Grid>
 

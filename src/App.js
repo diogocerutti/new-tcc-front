@@ -9,6 +9,7 @@ import { UsersPage } from "./pages/AdminDashboard/Users/index.js";
 import { AdminsPage } from "./pages/AdminDashboard/Admins/index.js";
 import { HomePage } from "./pages/Home/index.js";
 import { MenuPage } from "./pages/Home/Menu/index.js";
+import { AboutPage } from "./pages/Home/About/index.js";
 import { NotFound } from "./pages/NotFound/index.js";
 import { UserLoginPage } from "./pages/UserLogin/index.js";
 import { ProductPage } from "./pages/Product/index.js";
@@ -51,6 +52,7 @@ function App() {
       </Route>
       <Route path="/" element={<HomePage />} />
       <Route path="/menu" element={<MenuPage />} />
+      <Route path="/about" element={<AboutPage />} />
       <Route path="/user/login" element={<UserLoginPage />} />
       <Route path="/admin/login" element={<AdminLoginPage />} />
       <Route path="*" element={<NotFound />} />
