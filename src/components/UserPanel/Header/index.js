@@ -10,10 +10,11 @@ export function UserPanelHeader() {
       <Grid
         container
         justifyContent={"space-around"}
-        sx={{ backgroundColor: "#FFF" }}
+        alignItems={"center"}
+        sx={{ backgroundColor: "#D9D9D9", fontSize: 20, padding: 1 }}
       >
         <Grid item>
-          <Typography>Olá, {username}</Typography>
+          <Typography fontSize={25}>Olá, {username}</Typography>
         </Grid>
         <Grid item>
           <Link
