@@ -2,10 +2,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
@@ -45,7 +42,7 @@ export default function AdminLoginForm({ type }) {
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 14,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -55,7 +52,7 @@ export default function AdminLoginForm({ type }) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5" color="black">
-          LOGIN ADMIN
+          ADMINISTRAÇÃO
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -63,7 +60,7 @@ export default function AdminLoginForm({ type }) {
             required
             fullWidth
             id="email"
-            label="Email"
+            label="E-mail"
             name="email"
             autoComplete="email"
             autoFocus
@@ -73,14 +70,10 @@ export default function AdminLoginForm({ type }) {
             required
             fullWidth
             id="password"
-            label="Password"
+            label="Senha"
             name="password"
             type="password"
             autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
           />
           <Button
             type="submit"
@@ -88,20 +81,8 @@ export default function AdminLoginForm({ type }) {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            ENTRAR
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
     </Container>
