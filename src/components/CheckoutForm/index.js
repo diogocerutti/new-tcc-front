@@ -45,6 +45,15 @@ export function CheckoutForm() {
     setId_payment_type(event.target.value);
   };
 
+  function subtotalFormat(price, quantity) {
+    let subtotal = price * quantity;
+    if (subtotal.toString().includes(".")) {
+      return subtotal.toString().replace(".", ",") + "0";
+    } else {
+      return subtotal.toString() + ",00";
+    }
+  }
+
   const handleGetUserAddress = useCallback(async () => {
     const response = await getUserAddress(id_user);
     setUser_address(response);
@@ -81,99 +90,140 @@ export function CheckoutForm() {
       container
       display={"flex"}
       flexDirection={"column"}
-      alignItems={"center"}
+      justifyContent={"center"}
     >
-      <Typography component="h1" variant="h5" color="black">
-        Finalizar Pedido
-      </Typography>
-      <Box
-        component="form"
-        noValidate
-        sx={{ mt: 1, border: "solid", padding: 1 }}
-        onSubmit={handleSubmit}
-      >
-        <Grid item border={"solid"} sx={{ borderWidth: 1 }}>
-          <Typography variant="h6">Endereço</Typography>
-          <Typography>Rua: {user_address.address}</Typography>
-          <Typography>Cidade: {user_address.city}</Typography>
-          <Typography>CEP: {user_address.postal_code}</Typography>
-        </Grid>
-        <TextField
-          type="date"
-          margin="normal"
-          required
-          fullWidth
-          id="date"
-          name="date"
-          label="Para quando?"
-          onChange={handleChangeDate}
-        />
-        <TextField
-          type="time"
-          margin="normal"
-          required
-          fullWidth
-          id="time"
-          name="time"
-          label="Horário"
-          onChange={handleChangeHour}
-        />
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">Produto</TableCell>
-              <TableCell align="right">Quantidade</TableCell>
-              <TableCell align="right">Subtotal</TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {cart.map((row) => (
-              <TableRow
-                key={row.id_product}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell align="left">
-                  <Typography variant="body1" color="#2EA2CC">
-                    {row.name}
-                  </Typography>
-                </TableCell>
-                <TableCell align="right">{row.quantity}</TableCell>
-                <TableCell align="right">{row.price * row.quantity}</TableCell>
-              </TableRow>
-            ))}
-            <TableRow>
-              <TableCell>Total</TableCell>
-              <TableCell></TableCell>
-              <TableCell align="right">
-                {cart.length !== 0 ? state.state.total : ""}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-        <FormControl>
-          <FormLabel id="payment_types">Tipo de Pagamento</FormLabel>
-          <RadioGroup
-            defaultValue="2"
-            name="payment_types"
-            value={id_payment_type}
-            onChange={handleChangePaymentId}
-          >
-            <FormControlLabel value="1" control={<Radio />} label="Crédito" />
-            <FormControlLabel value="2" control={<Radio />} label="Pix" />
-          </RadioGroup>
-        </FormControl>
-        <Button
-          type="submit"
-          fullWidth
-          id="cadastrar"
-          variant="contained"
-          color="success"
-          sx={{ mt: 3, mb: 2 }}
+      <Grid item alignSelf={"center"} width={"60%"}>
+        <Typography fontSize={40}>Finalizar Pedido</Typography>
+        <Box
+          component="form"
+          noValidate
+          sx={{ mt: 1, padding: 1, backgroundColor: "#FFF" }}
+          onSubmit={handleSubmit}
         >
-          Finalizar Pedido
-        </Button>
-      </Box>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  align="left"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Produto
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Quantidade
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Subtotal
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {cart.map((row) => (
+                <TableRow key={row.id_product}>
+                  <TableCell
+                    align="left"
+                    sx={{ color: "#2EA2CC", fontSize: 17 }}
+                  >
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.quantity}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    R$ {subtotalFormat(row.price, row.quantity)}
+                  </TableCell>
+                </TableRow>
+              ))}
+              <TableRow>
+                <TableCell sx={{ fontSize: 20, fontWeight: "bold" }}>
+                  Total
+                </TableCell>
+                <TableCell></TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  {cart.length !== 0 ? "R$ " + state.state.total : ""}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Grid item display={"flex"} justifyContent={"space-between"} mt={3}>
+            <Grid item>
+              <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
+                Data
+              </Typography>
+              <Grid item justifyContent={"space-between"} display={"flex"}>
+                <TextField
+                  type="date"
+                  margin="normal"
+                  required
+                  id="date"
+                  name="date"
+                  label="Para quando?"
+                  onChange={handleChangeDate}
+                />
+                <TextField
+                  type="time"
+                  margin="normal"
+                  required
+                  id="time"
+                  name="time"
+                  label="Horário"
+                  onChange={handleChangeHour}
+                />
+              </Grid>
+            </Grid>
+
+            <FormControl>
+              <FormLabel
+                id="payment_types"
+                sx={{ fontSize: 20, fontWeight: "bold" }}
+              >
+                Tipo de Pagamento
+              </FormLabel>
+              <RadioGroup
+                defaultValue="2"
+                name="payment_types"
+                value={id_payment_type}
+                onChange={handleChangePaymentId}
+              >
+                <FormControlLabel
+                  value="1"
+                  control={<Radio />}
+                  label="Crédito"
+                />
+                <FormControlLabel value="2" control={<Radio />} label="Pix" />
+              </RadioGroup>
+            </FormControl>
+            <Grid item>
+              <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
+                Endereço
+              </Typography>
+              <Typography>Rua: {user_address.address}</Typography>
+              <Typography>Cidade: {user_address.city}</Typography>
+              <Typography>CEP: {user_address.postal_code}</Typography>
+            </Grid>
+          </Grid>
+          <Grid item display={"flex"} justifyContent={"center"}>
+            <Button
+              type="submit"
+              id="cadastrar"
+              variant="contained"
+              color="success"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Finalizar Pedido
+            </Button>
+          </Grid>
+        </Box>
+      </Grid>
     </Grid>
   );
 }
