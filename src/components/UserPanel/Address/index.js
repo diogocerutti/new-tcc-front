@@ -8,6 +8,12 @@ export function Address() {
 
   const [userAddress, setUserAddress] = useState({});
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    alert("Endereço Atualizado!");
+  };
+
   const handleGetUserAddress = useCallback(async () => {
     const response = await getUserAddress(id_user);
     setUserAddress(response);
@@ -22,6 +28,7 @@ export function Address() {
       {userAddress ? (
         <Grid container justifyContent={"center"}>
           <Box
+            onSubmit={handleSubmit}
             component="form"
             noValidate
             sx={{ backgroundColor: "#FFF" }}
@@ -33,7 +40,7 @@ export function Address() {
             padding={3}
             borderRadius={3}
           >
-            <Typography variant="h5">Endereço</Typography>
+            <Typography fontSize={40}>Endereço</Typography>
             <TextField
               type="text"
               required
@@ -64,7 +71,7 @@ export function Address() {
 
             <Grid item display="flex" justifyContent={"center"}>
               <Button
-                /* type="submit" */
+                type="submit"
                 id="alterar"
                 variant="contained"
                 color="primary"

@@ -8,6 +8,12 @@ export function Details() {
 
   const [userDetails, setUserDetails] = useState({});
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    alert("Dados Atualizados!");
+  };
+
   const handleGetUserDetails = useCallback(async () => {
     const response = await getOneUser(id_user);
     setUserDetails(response);
@@ -22,6 +28,7 @@ export function Details() {
       {userDetails ? (
         <Grid container justifyContent={"center"}>
           <Box
+            onSubmit={handleSubmit}
             component="form"
             noValidate
             sx={{ backgroundColor: "#FFF" }}
@@ -33,7 +40,7 @@ export function Details() {
             padding={3}
             borderRadius={3}
           >
-            <Typography variant="h5">Detalhes da Conta</Typography>
+            <Typography fontSize={40}>Detalhes da Conta</Typography>
             <TextField
               type="text"
               required
@@ -87,7 +94,7 @@ export function Details() {
             />
             <Grid item display="flex" justifyContent={"center"}>
               <Button
-                /* type="submit" */
+                type="submit"
                 id="alterar"
                 variant="contained"
                 color="primary"

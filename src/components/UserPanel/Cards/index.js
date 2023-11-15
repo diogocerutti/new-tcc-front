@@ -1,9 +1,18 @@
 import { Typography, Grid, Box, TextField, Button } from "@mui/material";
 
 export function Cards() {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    alert("Cartão Atualizado!");
+  };
+
   return (
     <Grid container justifyContent={"center"}>
       <Box
+        onSubmit={handleSubmit}
+        component="form"
+        noValidate
         sx={{ backgroundColor: "#FFF" }}
         rowGap={2}
         display={"flex"}
@@ -13,7 +22,7 @@ export function Cards() {
         padding={3}
         borderRadius={3}
       >
-        <Typography variant="h5">Cartão de Crédito</Typography>
+        <Typography fontSize={40}>Cartão de Crédito</Typography>
         <Grid item display={"flex"} columnGap={2}>
           <TextField
             type="text"
@@ -59,6 +68,7 @@ export function Cards() {
           />
         </Grid>
         <Button
+          type="submit"
           id="enviar"
           variant="contained"
           color="primary"
