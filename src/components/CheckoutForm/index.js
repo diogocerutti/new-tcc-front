@@ -97,7 +97,7 @@ export function CheckoutForm() {
         <Box
           component="form"
           noValidate
-          sx={{ mt: 1, padding: 1, backgroundColor: "#FFF" }}
+          sx={{ mt: 5, padding: 1, backgroundColor: "#FFF" }}
           onSubmit={handleSubmit}
         >
           <Table>

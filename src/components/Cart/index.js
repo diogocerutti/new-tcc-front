@@ -51,6 +51,9 @@ export function Cart() {
     <Grid container>
       {cart.length !== 0 ? (
         <>
+          <Grid item width={"24%"} display={"flex"} justifyContent={"end"}>
+            <Typography fontSize={40}>Carrinho</Typography>
+          </Grid>
           <TableContainer
             sx={{
               justifyContent: "center",

@@ -1,5 +1,4 @@
 import {
-  TableContainer,
   Table,
   TableHead,
   TableRow,
@@ -9,6 +8,8 @@ import {
   Grid,
   IconButton,
   Button,
+  Modal,
+  Rating,
 } from "@mui/material";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { useState, useCallback, useEffect } from "react";
@@ -18,6 +19,30 @@ import Cookies from "js-cookie";
 export function Orders() {
   const id_user = Cookies.get("user_id");
   const [userOrders, setUserOrders] = useState([]);
+  const [openDetails, setOpenDetails] = useState(false);
+  const [openRate, setOpenRate] = useState(false);
+  const [rating, setRating] = useState(2);
+
+  const handleOpenDetails = () => setOpenDetails(true);
+  const handleCloseDetails = () => setOpenDetails(false);
+  const handleOpenRate = () => setOpenRate(true);
+  const handleCloseRate = () => setOpenRate(false);
+
+  function dateFormat(date) {
+    if (date.includes("-")) {
+      return date.replaceAll("-", "/");
+    } else {
+      return date;
+    }
+  }
+
+  function totalFormat(total) {
+    if (total.toString().includes(".")) {
+      return total.toString().replaceAll(".", ",") + "0";
+    } else {
+      return total.toString() + ",00";
+    }
+  }
 
   const handleGetUserOrders = useCallback(async () => {
     const response = await getUserOrders(id_user);
@@ -29,40 +54,170 @@ export function Orders() {
   }, [handleGetUserOrders]);
 
   return (
-    <>
+    <Grid container justifyContent={"center"}>
       {userOrders.length !== 0 ? (
-        <TableContainer sx={{ backgroundColor: "#FFF" }}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Grid item mt={5} md={11} lg={11} sx={{ backgroundColor: "#FFF" }}>
+          <Modal
+            open={openDetails}
+            onClose={handleCloseDetails}
+            slotProps={{
+              backdrop: { style: { backgroundColor: "transparent" } },
+            }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Grid item lg={4} md={8} xs={12} sx={{ backgroundColor: "#FFF" }}>
+              <Typography fontSize={20} fontWeight={"bold"} mt={2} ml={2}>
+                Detalhes do Pedido
+              </Typography>
+              <Table sx={{ width: "100%" }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      align="left"
+                      sx={{ fontSize: 20, fontWeight: "bold" }}
+                    >
+                      Produto
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ fontSize: 20, fontWeight: "bold" }}
+                    >
+                      Quantidade
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ fontSize: 20, fontWeight: "bold" }}
+                    >
+                      Preço
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell align="left" sx={{ fontSize: 17 }}>
+                      Produto
+                    </TableCell>
+                    <TableCell align="right" sx={{ fontSize: 17 }}>
+                      Quantidade
+                    </TableCell>
+                    <TableCell align="right" sx={{ fontSize: 17 }}>
+                      Preço
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Grid>
+          </Modal>
+          <Modal
+            open={openRate}
+            onClose={handleCloseRate}
+            slotProps={{
+              backdrop: { style: { backgroundColor: "transparent" } },
+            }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Grid
+              item
+              lg={3}
+              md={4}
+              xs={12}
+              sx={{ backgroundColor: "#FFF", textAlign: "center" }}
+            >
+              <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
+                Como você avalia o pedido?
+              </Typography>
+              <Rating
+                value={rating}
+                onChange={(event, newValue) => {
+                  setRating(newValue);
+                }}
+              />
+            </Grid>
+          </Modal>
+          <Table sx={{ width: "100%" }}>
             <TableHead>
               <TableRow>
-                <TableCell align="left">Número</TableCell>
-                <TableCell align="right">Data</TableCell>
-                <TableCell align="right">Status</TableCell>
-                <TableCell align="right">Total</TableCell>
-                <TableCell align="right">Opções</TableCell>
+                <TableCell
+                  align="left"
+                  width={"10%"}
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Número
+                </TableCell>
+                <TableCell
+                  align="right"
+                  width={"20%"}
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Data
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Hora
+                </TableCell>
+                <TableCell
+                  align="right"
+                  width={"15%"}
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Status
+                </TableCell>
+                <TableCell
+                  align="right"
+                  width={"20%"}
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Total
+                </TableCell>
+                <TableCell
+                  width={"20%"}
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Opções
+                </TableCell>
               </TableRow>
             </TableHead>
-
             <TableBody>
               {userOrders.map((row) => (
                 <TableRow
                   key={row.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell align="left" width="10%">
+                  <TableCell align="left" width={"10%"} sx={{ fontSize: 17 }}>
                     {row.id}
                   </TableCell>
-                  <TableCell align="right">{row.date}</TableCell>
-                  <TableCell align="right">
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {dateFormat(row.date)}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.hour}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
                     {row.order_status_relation.status}
                   </TableCell>
-                  <TableCell align="right">{row.total}</TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {totalFormat(row.total)}
+                  </TableCell>
                   <TableCell align="right" width={"10%"}>
                     <Grid>
-                      <IconButton>
+                      <IconButton color="inherit" onClick={handleOpenDetails}>
                         <DescriptionIcon />
                       </IconButton>
                       <Button
+                        onClick={handleOpenRate}
                         color="warning"
                         sx={{
                           border: "solid",
@@ -78,10 +233,10 @@ export function Orders() {
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </Grid>
       ) : (
         <Typography>Você não tem pedidos!</Typography>
       )}
-    </>
+    </Grid>
   );
 }

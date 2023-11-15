@@ -1,7 +1,10 @@
 import { Button, TextField, Box, Typography, Grid } from "@mui/material";
 import { userLogin } from "../../api/user";
+import { useNavigate } from "react-router-dom";
 
 export default function UserLoginForm({ type }) {
+  let navigate = useNavigate();
+
   const handleSubmit = (event) => {
     if (type === "login") {
       event.preventDefault();
@@ -17,6 +20,8 @@ export default function UserLoginForm({ type }) {
           console.log("DEU ERRO!", res.response.data.msg); // mensagem de erro do BACK
         } else {
           console.log("DEU CERTO!", res);
+          alert("LOGADO COM SUCESSO");
+          return navigate("/");
         }
       });
     } else {
