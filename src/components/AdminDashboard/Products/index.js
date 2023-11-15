@@ -5,7 +5,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Grid,
   Button,
   Modal,
@@ -114,30 +113,40 @@ export default function Products() {
 
   return (
     <>
-      <Grid container justifyContent={"space-between"} alignItems={"center"}>
-        <Typography variant="h5">Produtos</Typography>
-        <IconButton onClick={handleOpen}>
-          <AddCircleIcon color="success" sx={{ fontSize: "3vw" }} />
-        </IconButton>
+      <Grid container justifyContent={"center"}>
+        <Grid
+          item
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+          xs={12}
+          md={12}
+          lg={10}
+        >
+          <Typography variant="h5">Produtos</Typography>
+          <IconButton onClick={handleOpen}>
+            <AddCircleIcon color="success" sx={{ fontSize: "3vw" }} />
+          </IconButton>
+        </Grid>
       </Grid>
       <Modal open={open} onClose={handleClose}>
-        <Box
+        <Grid
+          item
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            backgroundColor: "white",
           }}
         >
-          <Typography component="h1" variant="h5" color="black">
-            Cadastrar Produto
-          </Typography>
           <Box
             component="form"
             onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}
+            sx={{ mt: 10, backgroundColor: "white", padding: 2 }}
           >
+            <Typography component="h1" variant="h5" color="black">
+              Cadastrar Produto
+            </Typography>
             <TextField
               type="text"
               margin="normal"
@@ -158,40 +167,42 @@ export default function Products() {
               label="Preço"
               onChange={handleChangePrice}
             />
-            <TextField
-              select
-              margin="normal"
-              required
-              fullWidth
-              id="id_measure"
-              name="id_measure"
-              label="Unidade de medida"
-              value={id_measure}
-              onChange={handleChangeMeasure}
-            >
-              {measures.map((row) => (
-                <MenuItem key={row.id} id="measureOption" value={row.id}>
-                  {row.measure}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              select
-              margin="normal"
-              required
-              fullWidth
-              id="id_category"
-              name="id_category"
-              label="Categoria"
-              value={id_category}
-              onChange={handleChangeCategory}
-            >
-              {categories.map((row) => (
-                <MenuItem key={row.id} id="categoryOption" value={row.id}>
-                  {row.category}
-                </MenuItem>
-              ))}
-            </TextField>
+            <Grid item display={"flex"} columnGap={5}>
+              <TextField
+                select
+                margin="normal"
+                required
+                fullWidth
+                id="id_measure"
+                name="id_measure"
+                label="Unidade de medida"
+                value={id_measure}
+                onChange={handleChangeMeasure}
+              >
+                {measures.map((row) => (
+                  <MenuItem key={row.id} id="measureOption" value={row.id}>
+                    {row.measure}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                select
+                margin="normal"
+                required
+                fullWidth
+                id="id_category"
+                name="id_category"
+                label="Categoria"
+                value={id_category}
+                onChange={handleChangeCategory}
+              >
+                {categories.map((row) => (
+                  <MenuItem key={row.id} id="categoryOption" value={row.id}>
+                    {row.category}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
             <TextField
               type="text"
               margin="normal"
@@ -203,95 +214,153 @@ export default function Products() {
               multiline
               onChange={handleChangeDescription}
             />
-            <input
-              filename={image}
-              onChange={handleChangeImage}
-              type="file"
-              accept="image/*"
-              id="image"
-              name="image"
-            ></input>
-            <Button
-              type="submit"
-              fullWidth
-              id="cadastrar"
-              variant="contained"
-              color="success"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Cadastrar
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell align="right">Nome</TableCell>
-              <TableCell align="right">Preço</TableCell>
-              <TableCell align="right">Unidade Medida</TableCell>
-              <TableCell align="right">Descrição</TableCell>
-              <TableCell align="right">Categoria</TableCell>
-              <TableCell align="right">Imagem</TableCell>
-              <TableCell align="right">Opções</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {products.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            <Grid item>
+              <Typography>Imagem</Typography>
+              <input
+                filename={image}
+                onChange={handleChangeImage}
+                type="file"
+                accept="image/*"
+                id="image"
+                name="image"
+              ></input>
+            </Grid>
+            <Grid item mt={2} display={"flex"} justifyContent={"center"}>
+              <Button
+                type="submit"
+                id="cadastrar"
+                variant="contained"
+                color="success"
               >
-                <TableCell component="th" scope="row">
-                  {row.id}{" "}
-                  {row.status === "true" ? (
-                    <img
-                      alt="status"
-                      src={require("../../../images/true.png")}
-                      style={{ height: "1.1vw", width: "1.1vw" }}
-                    />
-                  ) : (
-                    <img
-                      alt="status"
-                      src={require("../../../images/false.png")}
-                      style={{ height: "1.1vw", width: "1.1vw" }}
-                    />
-                  )}
+                Cadastrar
+              </Button>
+            </Grid>
+          </Box>
+        </Grid>
+      </Modal>
+      <Grid container display={"flex"} justifyContent={"center"}>
+        <Grid item xs={12} md={12} lg={10}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontSize: 20, fontWeight: "bold" }}>
+                  ID
                 </TableCell>
-                <TableCell align="right">{row.name}</TableCell>
-                <TableCell align="right">{row.price}</TableCell>
-                <TableCell align="right">{row.measure}</TableCell>
-                <TableCell align="right">...</TableCell>
-                <TableCell align="right">{row.category}</TableCell>
-                <TableCell align="right">
-                  <img
-                    alt="imagem"
-                    src={require(`C:/Users/diogo/Desktop/Produtos/${row.image}`)}
-                    style={{ height: "1.6vw", width: "1.6vw" }}
-                  />
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Nome
                 </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={() => {
-                      handleOpenUpdate();
-                      setCurrentData(row);
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={async () => {
-                      alert("Produto removido!");
-                      await deleteProduct(row.id);
-                    }}
-                  />
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Preço
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Unidade Medida
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Descrição
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Categoria
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Imagem
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Opções
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {products.map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell align="left">
+                    <Grid
+                      item
+                      sx={{ display: "flex" }}
+                      justifyContent={"space-between"}
+                    >
+                      <Typography fontSize={17}>{row.id}</Typography>
+                      {row.status === "true" ? (
+                        <img
+                          alt="status"
+                          src={require("../../../images/true.png")}
+                          style={{ height: "1.1vw", width: "1.1vw" }}
+                        />
+                      ) : (
+                        <img
+                          alt="status"
+                          src={require("../../../images/false.png")}
+                          style={{ height: "1.1vw", width: "1.1vw" }}
+                        />
+                      )}
+                    </Grid>
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.price}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.measure}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    ...
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.category}
+                  </TableCell>
+                  <TableCell align="right">
+                    <img
+                      alt="imagem"
+                      src={require(`C:/Users/diogo/Desktop/Produtos/${row.image}`)}
+                      style={{ height: "1.6vw", width: "1.6vw" }}
+                    />
+                  </TableCell>
+                  <TableCell align="right">
+                    <EditIcon
+                      onClick={() => {
+                        handleOpenUpdate();
+                        setCurrentData(row);
+                      }}
+                    />
+                    <DeleteIcon
+                      color="error"
+                      onClick={async () => {
+                        alert("Produto removido!");
+                        await deleteProduct(row.id);
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Grid>
+      </Grid>
       <UpdateModal
         openUpdate={openUpdate}
         rowData={currentData}

@@ -8,6 +8,7 @@ import {
   Switch,
   FormGroup,
   FormControlLabel,
+  Grid,
 } from "@mui/material";
 import { updateProduct } from "../../../../../api/product/index.js";
 import { useState, useEffect } from "react";
@@ -88,23 +89,27 @@ export default function UpdateModal({
 
   return (
     <Modal open={openUpdate} onClose={onCloseUpdate}>
-      <Box
+      <Grid
+        item
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          backgroundColor: "white",
         }}
       >
-        <Typography component="h1" variant="h5" color="black">
-          Atualizar Produto
-        </Typography>
         <Box
           component="form"
           onSubmit={handleSubmit}
           noValidate
-          sx={{ mt: 1 }} /* encType="multipart/form-data" */
+          sx={{
+            mt: 10,
+            backgroundColor: "white",
+            padding: 2,
+          }} /* encType="multipart/form-data" */
         >
+          <Typography component="h1" variant="h5" color="black">
+            Atualizar Produto
+          </Typography>
           <TextField
             type="text"
             margin="normal"
@@ -127,40 +132,43 @@ export default function UpdateModal({
             value={price}
             onChange={handleChangePrice}
           />
-          <TextField
-            select
-            margin="normal"
-            required
-            fullWidth
-            id="id_measure"
-            name="id_measure"
-            label="Unidade de medida"
-            value={id_measure}
-            onChange={handleChangeMeasure}
-          >
-            {measures.map((row) => (
-              <MenuItem key={row.id} id="measureOption" value={row.id}>
-                {row.measure}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            select
-            margin="normal"
-            required
-            fullWidth
-            id="id_category"
-            name="id_category"
-            label="Categoria"
-            value={id_category}
-            onChange={handleChangeCategory}
-          >
-            {categories.map((row) => (
-              <MenuItem key={row.id} id="categoryOption" value={row.id}>
-                {row.category}
-              </MenuItem>
-            ))}
-          </TextField>
+          <Grid item display={"flex"} columnGap={5}>
+            <TextField
+              select
+              margin="normal"
+              required
+              fullWidth
+              id="id_measure"
+              name="id_measure"
+              label="Unidade de medida"
+              value={id_measure}
+              onChange={handleChangeMeasure}
+            >
+              {measures.map((row) => (
+                <MenuItem key={row.id} id="measureOption" value={row.id}>
+                  {row.measure}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              select
+              margin="normal"
+              required
+              fullWidth
+              id="id_category"
+              name="id_category"
+              label="Categoria"
+              value={id_category}
+              onChange={handleChangeCategory}
+            >
+              {categories.map((row) => (
+                <MenuItem key={row.id} id="categoryOption" value={row.id}>
+                  {row.category}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+
           <TextField
             type="text"
             margin="normal"
@@ -173,32 +181,37 @@ export default function UpdateModal({
             value={description}
             onChange={handleChangeDescription}
           />
-          <input
-            filename={image}
-            onChange={handleChangeImage}
-            type="file"
-            accept="image/*"
-            id="image"
-            name="image"
-          ></input>
+          <Grid item>
+            <Typography>Imagem</Typography>
+            <input
+              filename={image}
+              onChange={handleChangeImage}
+              type="file"
+              accept="image/*"
+              id="image"
+              name="image"
+            ></input>
+          </Grid>
           <FormGroup>
             <FormControlLabel
               label="Ativo?"
               control={<Switch onChange={handleChangeStatus} />}
             />
           </FormGroup>
-          <Button
-            type="submit"
-            fullWidth
-            id="cadastrar"
-            variant="contained"
-            color="success"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Atualizar
-          </Button>
+          <Grid item mt={2} display={"flex"} justifyContent={"center"}>
+            <Button
+              type="submit"
+              fullWidth
+              id="cadastrar"
+              variant="contained"
+              color="success"
+              mt
+            >
+              Atualizar
+            </Button>
+          </Grid>
         </Box>
-      </Box>
+      </Grid>
     </Modal>
   );
 }
