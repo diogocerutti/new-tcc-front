@@ -20,6 +20,23 @@ export function Cart() {
   const { cart, setCart } = useAppContext();
   const [total, setTotal] = useState();
 
+  function priceFormat(price) {
+    if (price.includes(".")) {
+      return price.replace(".", ",") + "0";
+    } else {
+      return price + ",00";
+    }
+  }
+
+  function subtotalFormat(price, quantity) {
+    let subtotal = price * quantity;
+    if (subtotal.toString().includes(".")) {
+      return subtotal.toString().replace(".", ",") + "0";
+    } else {
+      return subtotal.toString() + ",00";
+    }
+  }
+
   const handleRemoveProduct = (row) => {
     alert("Produto removido.");
     cart.splice(cart.indexOf(row), 1);
@@ -28,24 +45,48 @@ export function Cart() {
 
   useEffect(() => {
     setTotal(cart.reduce((acc, obj) => acc + obj.quantity * obj.price, 0));
-    console.log(cart);
   }, [cart, total]);
 
   return (
     <Grid container>
       {cart.length !== 0 ? (
         <>
-          <TableContainer>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableContainer
+            sx={{
+              justifyContent: "center",
+              display: "flex",
+              marginTop: 5,
+            }}
+          >
+            <Table sx={{ backgroundColor: "#FFF", width: 1300 }}>
               <TableHead>
                 <TableRow>
-                  <TableCell align="left">Produto</TableCell>
-                  <TableCell align="right">Preço</TableCell>
-                  <TableCell align="right">Quantidade</TableCell>
-                  <TableCell align="right">Subtotal</TableCell>
+                  <TableCell
+                    align="left"
+                    sx={{ fontSize: 20, fontWeight: "bold" }}
+                  >
+                    Produto
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{ fontSize: 20, fontWeight: "bold" }}
+                  >
+                    Preço
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{ fontSize: 20, fontWeight: "bold" }}
+                  >
+                    Quantidade
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{ fontSize: 20, fontWeight: "bold" }}
+                  >
+                    Subtotal
+                  </TableCell>
                 </TableRow>
               </TableHead>
-
               <TableBody>
                 {cart.map((row) => (
                   <TableRow
@@ -63,42 +104,75 @@ export function Cart() {
                         >
                           <ClearIcon />
                         </IconButton>
-                        <Typography variant="body1" color="#2EA2CC">
+                        <Typography color="#71bcf4" fontSize={17}>
                           {row.name}
                         </Typography>
                         <img
                           alt="imagem"
                           src={require(`C:/Users/diogo/Desktop/Produtos/${row.image}`)}
-                          style={{ height: "5vw", width: "5vw" }}
+                          style={{ height: "3vw", width: "3vw" }}
                         />
                       </Grid>
                     </TableCell>
-                    <TableCell align="right">{row.price}</TableCell>
-                    <TableCell align="right">{row.quantity}</TableCell>
-                    <TableCell align="right">
-                      {row.price * row.quantity}
+                    <TableCell align="right" sx={{ fontSize: 17 }}>
+                      R$ {priceFormat(row.price)}
+                    </TableCell>
+                    <TableCell align="right" sx={{ fontSize: 17 }}>
+                      {row.quantity}
+                    </TableCell>
+                    <TableCell align="right" sx={{ fontSize: 17 }}>
+                      R$ {subtotalFormat(row.price, row.quantity)}
                     </TableCell>
                   </TableRow>
                 ))}
+                <TableRow>
+                  <TableCell
+                    align="left"
+                    sx={{ fontSize: 20, fontWeight: "bold" }}
+                  >
+                    Total
+                  </TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{ fontSize: 20, fontWeight: "bold" }}
+                  >
+                    R$ {total}
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
-          <Grid item display="flex" justifyContent="center" width="100%">
-            <Button sx={{ border: "solid", height: "42.5px" }}>
+          <Grid
+            item
+            justifyContent="space-evenly"
+            display="flex"
+            width="100%"
+            mt={3}
+          >
+            <Button
+              sx={{ border: "solid", backgroundColor: "#FFF", color: "#000" }}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/");
+              }}
+            >
               Continuar comprando
             </Button>
-            <Grid item>
-              <Typography>Total: {total}</Typography>
-              <Button
-                sx={{ border: "solid" }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate("/checkout", { state: { total: total } });
-                }}
-              >
-                Continuar para pagamento
-              </Button>
-            </Grid>
+            <Button
+              sx={{
+                border: "solid",
+                backgroundColor: "#8AD072",
+                color: "#000",
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/checkout", { state: { total: total } });
+              }}
+            >
+              Continuar para pagamento
+            </Button>
           </Grid>
         </>
       ) : (
