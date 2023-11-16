@@ -3,7 +3,7 @@ import { Button, Modal, Typography, Box, TextField, Grid } from "@mui/material";
 export default function UpdateModal({ openUpdate, onCloseUpdate }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
-    alert("Tipo de Pagamento Atualizado!");
+    alert("Usuário Atualizado!");
   };
 
   return (
@@ -28,17 +28,37 @@ export default function UpdateModal({ openUpdate, onCloseUpdate }) {
           }} /* encType="multipart/form-data" */
         >
           <Typography component="h1" variant="h5" color="black">
-            Atualizar Tipo de Pagamento
+            Atualizar Usuário
           </Typography>
           <TextField
             type="text"
             margin="normal"
             required
             fullWidth
-            id="status"
-            name="status"
-            label="Status"
-            value="Crédito"
+            id="name"
+            name="name"
+            label="Nome"
+            value="Edson Silva"
+          />
+          <TextField
+            type="tel"
+            margin="normal"
+            required
+            fullWidth
+            id="phone"
+            name="phone"
+            label="Telefone"
+            value="(49)977864301"
+          />
+          <TextField
+            type="email"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            name="email"
+            label="E-mail"
+            value="ed@g.com"
           />
 
           <Grid item mt={2} display={"flex"} justifyContent={"center"}>

@@ -3,7 +3,7 @@ import { Button, Modal, Typography, Box, TextField, Grid } from "@mui/material";
 export default function UpdateModal({ openUpdate, onCloseUpdate }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
-    alert("Tipo de Pagamento Atualizado!");
+    alert("Unidade de medida de produto atualizada!");
   };
 
   return (
@@ -28,7 +28,7 @@ export default function UpdateModal({ openUpdate, onCloseUpdate }) {
           }} /* encType="multipart/form-data" */
         >
           <Typography component="h1" variant="h5" color="black">
-            Atualizar Tipo de Pagamento
+            Atualizar Unidade de Medida
           </Typography>
           <TextField
             type="text"
@@ -38,7 +38,7 @@ export default function UpdateModal({ openUpdate, onCloseUpdate }) {
             id="status"
             name="status"
             label="Status"
-            value="Crédito"
+            value="KG"
           />
 
           <Grid item mt={2} display={"flex"} justifyContent={"center"}>

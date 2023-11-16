@@ -202,7 +202,7 @@ export default function UpdateModal({
             <Button
               type="submit"
               fullWidth
-              id="cadastrar"
+              id="update"
               variant="contained"
               color="success"
               mt

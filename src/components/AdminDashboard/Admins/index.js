@@ -2,86 +2,168 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  Typography,
   Grid,
+  Typography,
+  IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import UpdateModal from "./components/updateModal";
+import { useState } from "react";
 
 export default function Admins() {
+  const [openUpdate, setOpenUpdate] = useState(false);
+
+  const handleOpenUpdate = () => setOpenUpdate(true);
+
+  const handleCloseUpdate = () => setOpenUpdate(false);
+
   return (
     <>
-      <Typography variant="h5">Usuários Administradores</Typography>
-
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell align="right">Nome</TableCell>
-              <TableCell align="right">Usuário</TableCell>
-              <TableCell align="right">E-mail</TableCell>
-              <TableCell align="right">Opções</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {/* {products.map((row) => ( */}
-            <TableRow
-              /* key={row.id} */
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row" width={"10%"}>
-                <Grid item display={"flex"} justifyContent={"space-between"}>
+      <Grid container justifyContent={"center"}>
+        <Grid item xs={12} md={10} lg={10}>
+          <Grid
+            item
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+          >
+            <Typography variant="h5">Usuários Administradores</Typography>
+            <IconButton>
+              <AddCircleIcon color="success" sx={{ fontSize: "3vw" }} />
+            </IconButton>
+          </Grid>
+          <Table sx={{ mt: 6 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  align="left"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
                   ID
-                  <img
-                    alt="status"
-                    src={require("../../../images/true.png")}
-                    style={{ height: "1.1vw", width: "1.1vw" }}
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Nome
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Usuário
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  E-mail
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Opções
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell align="left" sx={{ fontSize: 17 }}>
+                  1
+                </TableCell>
+                <TableCell align="right" sx={{ fontSize: 17 }}>
+                  Diogo Cerutti
+                </TableCell>
+                <TableCell align="right" sx={{ fontSize: 17 }}>
+                  diogoc
+                </TableCell>
+                <TableCell align="right" sx={{ fontSize: 17 }}>
+                  diogo@d.com
+                </TableCell>
+                <TableCell align="right">
+                  <EditIcon
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleOpenUpdate();
+                    }}
                   />
-                </Grid>
-
-                {/* {row.id}{" "}
-                      {row.status === "true" ? (
-                        <img
-                          alt="status"
-                          src={require("../../../images/true.png")}
-                          style={{ height: "1.1vw", width: "1.1vw" }}
-                        />
-                      ) : (
-                        <img
-                          alt="status"
-                          src={require("../../../images/false.png")}
-                          style={{ height: "1.1vw", width: "1.1vw" }}
-                        />
-                      )} */}
-              </TableCell>
-              <TableCell align="right">{/* {row.name} */}Nome</TableCell>
-              <TableCell align="right">{/* {row.price} */}Usuário</TableCell>
-              <TableCell align="right">{/* {row.measure} */}E-mail</TableCell>
-              <TableCell align="right">
-                <EditIcon
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    alert("Editar!");
-                  }}
-                />
-                <DeleteIcon
-                  color="error"
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    alert("Excluir!");
-                  }}
-                />
-              </TableCell>
-            </TableRow>
-            {/* ))} */}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                  <DeleteIcon
+                    color="error"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert("Usuário Administrador excluído.");
+                    }}
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="left" sx={{ fontSize: 17 }}>
+                  2
+                </TableCell>
+                <TableCell align="right" sx={{ fontSize: 17 }}>
+                  Flávio Favero
+                </TableCell>
+                <TableCell align="right" sx={{ fontSize: 17 }}>
+                  flaviof
+                </TableCell>
+                <TableCell align="right" sx={{ fontSize: 17 }}>
+                  flavio@f.com
+                </TableCell>
+                <TableCell align="right">
+                  <EditIcon
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert("Editar!");
+                    }}
+                  />
+                  <DeleteIcon
+                    color="error"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert("Usuário Administrador excluído.");
+                    }}
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="left" sx={{ fontSize: 17 }}>
+                  3
+                </TableCell>
+                <TableCell align="right" sx={{ fontSize: 17 }}>
+                  Douglas Costa
+                </TableCell>
+                <TableCell align="right" sx={{ fontSize: 17 }}>
+                  douglasc
+                </TableCell>
+                <TableCell align="right" sx={{ fontSize: 17 }}>
+                  douglas@c.com
+                </TableCell>
+                <TableCell align="right">
+                  <EditIcon
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert("Editar!");
+                    }}
+                  />
+                  <DeleteIcon
+                    color="error"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert("Usuário Administrador excluído.");
+                    }}
+                  />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Grid>
+      </Grid>
+      <UpdateModal openUpdate={openUpdate} onCloseUpdate={handleCloseUpdate} />
     </>
   );
 }

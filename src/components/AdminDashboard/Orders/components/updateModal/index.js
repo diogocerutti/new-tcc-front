@@ -107,7 +107,7 @@ export default function UpdateModal({ openUpdate, onCloseUpdate }) {
             <Button
               type="submit"
               fullWidth
-              id="cadastrar"
+              id="update"
               variant="contained"
               color="success"
             >
