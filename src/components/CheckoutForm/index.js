@@ -161,6 +161,7 @@ export function CheckoutForm() {
               </Typography>
               <Grid item justifyContent={"space-between"} display={"flex"}>
                 <TextField
+                  focused
                   type="date"
                   margin="normal"
                   required
@@ -170,6 +171,7 @@ export function CheckoutForm() {
                   onChange={handleChangeDate}
                 />
                 <TextField
+                  focused
                   type="time"
                   margin="normal"
                   required

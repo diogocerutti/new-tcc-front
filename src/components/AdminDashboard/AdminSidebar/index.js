@@ -8,11 +8,13 @@ import {
   Typography,
   Divider,
   IconButton,
+  Grid,
 } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import PersonIcon from "@mui/icons-material/Person";
 import { CustomList } from "./components/CustomList/index.js";
 import { useLocation } from "react-router-dom";
 
@@ -80,24 +82,43 @@ export function AdminSidebar({ children }) {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Grid
+            item
+            flexDirection={"row"}
+            display={"flex"}
+            alignItems={"center"}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Painel Administrador
-          </Typography>
-          <img
-            src={require("../../../images/Logo sem fundo.png")}
-            alt="logo"
-            style={{ height: "3vw" }}
-          />
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{ mr: 2, ...(open && { display: "none" }) }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6">Painel Administrador</Typography>
+            <img
+              src={require("../../../images/Logo sem fundo.png")}
+              alt="logo"
+              style={{ height: "3vw" }}
+            />
+          </Grid>
+          <Grid
+            item
+            flexDirection={"row"}
+            display={"flex"}
+            alignItems={"center"}
+          >
+            <PersonIcon />
+            <Typography variant="h6">Diogo Cerutti</Typography>
+          </Grid>
         </Toolbar>
       </AppBar>
       <Drawer
