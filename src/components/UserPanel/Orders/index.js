@@ -219,7 +219,7 @@ export function Orders() {
                       {row.order_status_relation.status}
                     </TableCell>
                     <TableCell align="right" sx={{ fontSize: 17 }}>
-                      {totalFormat(row.total)}
+                      R$ {totalFormat(row.total)}
                     </TableCell>
                     <TableCell align="right" width={"10%"}>
                       <Grid>

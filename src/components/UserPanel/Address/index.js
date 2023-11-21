@@ -42,6 +42,7 @@ export function Address() {
           >
             <Typography fontSize={40}>Endereço</Typography>
             <TextField
+              InputLabelProps={{ shrink: true }}
               type="text"
               required
               fullWidth
@@ -51,6 +52,7 @@ export function Address() {
               value={userAddress.address}
             />
             <TextField
+              InputLabelProps={{ shrink: true }}
               type="text"
               required
               fullWidth
@@ -60,6 +62,7 @@ export function Address() {
               value={userAddress.city}
             />
             <TextField
+              InputLabelProps={{ shrink: true }}
               type="text"
               required
               fullWidth

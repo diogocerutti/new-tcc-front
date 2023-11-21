@@ -42,6 +42,7 @@ export function Details() {
           >
             <Typography fontSize={40}>Detalhes da Conta</Typography>
             <TextField
+              InputLabelProps={{ shrink: true }}
               type="text"
               required
               fullWidth
@@ -51,6 +52,7 @@ export function Details() {
               value={userDetails.name}
             />
             <TextField
+              InputLabelProps={{ shrink: true }}
               type="email"
               required
               fullWidth
@@ -60,6 +62,7 @@ export function Details() {
               value={userDetails.email}
             />
             <TextField
+              InputLabelProps={{ shrink: true }}
               type="tel"
               required
               fullWidth

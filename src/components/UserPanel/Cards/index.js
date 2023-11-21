@@ -25,6 +25,7 @@ export function Cards() {
         <Typography fontSize={40}>Cartão de Crédito</Typography>
         <Grid item display={"flex"} columnGap={2}>
           <TextField
+            InputLabelProps={{ shrink: true }}
             type="text"
             required
             fullWidth
@@ -33,6 +34,7 @@ export function Cards() {
             label="Titular"
           />
           <TextField
+            InputLabelProps={{ shrink: true }}
             type="text"
             required
             fullWidth
@@ -42,6 +44,7 @@ export function Cards() {
           />
         </Grid>
         <TextField
+          InputLabelProps={{ shrink: true }}
           type="text"
           required
           fullWidth
@@ -51,6 +54,7 @@ export function Cards() {
         />
         <Grid item display={"flex"} columnGap={2}>
           <TextField
+            InputLabelProps={{ shrink: true }}
             type="text"
             required
             fullWidth
@@ -59,6 +63,7 @@ export function Cards() {
             label="Data de Validade"
           />
           <TextField
+            InputLabelProps={{ shrink: true }}
             type="text"
             required
             fullWidth

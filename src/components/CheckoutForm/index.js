@@ -54,6 +54,17 @@ export function CheckoutForm() {
     }
   }
 
+  function dateFormat(date) {
+    let newDate;
+    newDate =
+      date.substring(8, 10) +
+      "/" +
+      date.substring(5, 7) +
+      "/" +
+      date.substring(0, 4);
+    return newDate;
+  }
+
   const handleGetUserAddress = useCallback(async () => {
     const response = await getUserAddress(id_user);
     setUser_address(response);
@@ -72,13 +83,17 @@ export function CheckoutForm() {
     data = {
       products: products,
       id_payment_type: Number(id_payment_type),
-      date: date,
+      date: dateFormat(date),
       hour: hour,
     };
 
-    console.log(data);
-
-    return await createOrder(id_user, data).then(setCart([]));
+    if (data.hour.length === 0 || data.date === "//") {
+      return alert("Data e Hora são obrigatórios!");
+    } else
+      return await createOrder(id_user, data).then(
+        setCart([]),
+        alert("Pedido enviado!")
+      );
   };
 
   useEffect(() => {
@@ -161,7 +176,7 @@ export function CheckoutForm() {
               </Typography>
               <Grid item justifyContent={"space-between"} display={"flex"}>
                 <TextField
-                  focused
+                  InputLabelProps={{ shrink: true }}
                   type="date"
                   margin="normal"
                   required
@@ -171,7 +186,7 @@ export function CheckoutForm() {
                   onChange={handleChangeDate}
                 />
                 <TextField
-                  focused
+                  InputLabelProps={{ shrink: true }}
                   type="time"
                   margin="normal"
                   required
