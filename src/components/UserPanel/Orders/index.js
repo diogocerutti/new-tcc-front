@@ -310,7 +310,13 @@ export function Orders() {
           </Grid>
         </>
       ) : (
-        <Typography>Você não tem pedidos!</Typography>
+        <Typography
+          sx={{
+            fontSize: 17,
+          }}
+        >
+          Você não tem pedidos!
+        </Typography>
       )}
     </Grid>
   );

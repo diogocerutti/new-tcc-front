@@ -21,6 +21,7 @@ export function Cards() {
         width={"50%"}
         padding={3}
         borderRadius={3}
+        border={1}
       >
         <Typography fontSize={40}>Cartão de Crédito</Typography>
         <Grid item display={"flex"} columnGap={2}>

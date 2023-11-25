@@ -39,6 +39,7 @@ export function Address() {
             width={"50%"}
             padding={3}
             borderRadius={3}
+            border={1}
           >
             <Typography fontSize={40}>Endereço</Typography>
             <TextField

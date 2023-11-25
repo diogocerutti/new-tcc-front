@@ -39,6 +39,7 @@ export function Details() {
             width={"50%"}
             padding={3}
             borderRadius={3}
+            border={1}
           >
             <Typography fontSize={40}>Detalhes da Conta</Typography>
             <TextField

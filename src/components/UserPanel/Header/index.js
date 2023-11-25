@@ -1,10 +1,21 @@
-import { useLocation, Outlet } from "react-router-dom";
+import { useLocation, Outlet, useNavigate } from "react-router-dom";
 import { Grid, Typography, Link } from "@mui/material";
 import Cookies from "js-cookie";
 
 export function UserPanelHeader() {
   const username = Cookies.get("user_name");
   const location = useLocation();
+  let navigate = useNavigate();
+
+  const handleLogout = async (event) => {
+    event.preventDefault();
+    alert("Até logo!");
+    navigate("/");
+    Cookies.remove("user");
+    Cookies.remove("user_name");
+    Cookies.remove("user_id");
+  };
+
   return (
     <>
       <Grid
@@ -62,7 +73,12 @@ export function UserPanelHeader() {
           </Link>
         </Grid>
         <Grid item>
-          <Link underline="hover" color={"red"}>
+          <Link
+            component="button"
+            underline="hover"
+            color={"red"}
+            onClick={handleLogout}
+          >
             Sair
           </Link>
         </Grid>
