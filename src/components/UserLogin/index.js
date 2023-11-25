@@ -25,7 +25,7 @@ export default function UserLoginForm({ type }) {
         }
       });
     } else {
-      console.log("register!!");
+      console.log("Algo deu errado.");
     }
   };
 
@@ -50,6 +50,7 @@ export default function UserLoginForm({ type }) {
           flexDirection={"column"}
           padding={2}
           borderRadius={2}
+          border={1}
           sx={{
             backgroundColor: "#FFF",
           }}
@@ -94,6 +95,7 @@ export default function UserLoginForm({ type }) {
           flexDirection={"column"}
           padding={2}
           borderRadius={2}
+          border={1}
           height={"auto"}
           rowGap={3}
           sx={{

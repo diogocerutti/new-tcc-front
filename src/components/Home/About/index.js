@@ -9,15 +9,20 @@ export default function About() {
           color={"#FFF"}
           fontSize={50}
           fontWeight={"bold"}
-          sx={{ WebkitTextStrokeWidth: 2, WebkitTextStrokeColor: "#000" }}
+          sx={{
+            WebkitTextStrokeWidth: 2,
+            WebkitTextStrokeColor: "#000",
+          }}
         >
           Sobre nós &#128151;
         </Typography>
         <Typography variant="h5" mt={8}>
-          Somos uma empresa que visa o melhor para o cliente, com qualidade no
-          serviço e atendimento. Deixando seus eventos mais deliciosos com
-          nossos produtos. Nossa missão é alimentar a alma das pessoas com amor
-          e alegria, compartilhando o pão nosso de cada dia!
+          <span style={{ background: "#FFF", lineHeight: 0 }}>
+            Somos uma empresa que visa o melhor para o cliente, com qualidade no
+            serviço e atendimento. Deixando seus eventos mais deliciosos com
+            nossos produtos. Nossa missão é alimentar a alma das pessoas com
+            amor e alegria, compartilhando o pão nosso de cada dia!
+          </span>
         </Typography>
       </Grid>
     </Grid>

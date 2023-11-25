@@ -1,6 +1,5 @@
 import {
   Grid,
-  TableContainer,
   Table,
   TableHead,
   TableRow,
@@ -48,112 +47,103 @@ export function Cart() {
   }, [cart, total]);
 
   return (
-    <Grid container>
+    <Grid
+      container
+      justifyContent={"center"}
+      flexDirection={"column"}
+      alignItems={"center"}
+    >
       {cart.length !== 0 ? (
-        <>
-          <Grid item width={"24%"} display={"flex"} justifyContent={"end"}>
+        <Grid item sx={{ width: { lg: 1300, md: 900, xs: 500 } }}>
+          <Grid item>
             <Typography fontSize={40}>Carrinho</Typography>
           </Grid>
-          <TableContainer
-            sx={{
-              justifyContent: "center",
-              display: "flex",
-              marginTop: 5,
-            }}
-          >
-            <Table sx={{ backgroundColor: "#FFF", width: 1300 }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    align="left"
-                    sx={{ fontSize: 20, fontWeight: "bold" }}
-                  >
-                    Produto
+          <Table sx={{ backgroundColor: "#FFF", marginTop: 5 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  align="left"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Produto
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Preço
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Quantidade
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Subtotal
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {cart.map((row) => (
+                <TableRow
+                  key={row.id_product}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell align="left" width="30%">
+                    <Grid item display="flex" alignItems="center">
+                      <IconButton
+                        color="error"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleRemoveProduct(row);
+                        }}
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                      <Typography color="#71bcf4" fontSize={17}>
+                        {row.name}
+                      </Typography>
+                      <img
+                        alt="imagem"
+                        src={require(`C:/Users/diogo/Desktop/Produtos/${row.image}`)}
+                        style={{ height: "3vw", width: "3vw" }}
+                      />
+                    </Grid>
                   </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{ fontSize: 20, fontWeight: "bold" }}
-                  >
-                    Preço
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    R$ {priceFormat(row.price)}
                   </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{ fontSize: 20, fontWeight: "bold" }}
-                  >
-                    Quantidade
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.quantity}
                   </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{ fontSize: 20, fontWeight: "bold" }}
-                  >
-                    Subtotal
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {cart.map((row) => (
-                  <TableRow
-                    key={row.id_product}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell align="left" width="30%">
-                      <Grid item display="flex" alignItems="center">
-                        <IconButton
-                          color="error"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleRemoveProduct(row);
-                          }}
-                        >
-                          <ClearIcon />
-                        </IconButton>
-                        <Typography color="#71bcf4" fontSize={17}>
-                          {row.name}
-                        </Typography>
-                        <img
-                          alt="imagem"
-                          src={require(`C:/Users/diogo/Desktop/Produtos/${row.image}`)}
-                          style={{ height: "3vw", width: "3vw" }}
-                        />
-                      </Grid>
-                    </TableCell>
-                    <TableCell align="right" sx={{ fontSize: 17 }}>
-                      R$ {priceFormat(row.price)}
-                    </TableCell>
-                    <TableCell align="right" sx={{ fontSize: 17 }}>
-                      {row.quantity}
-                    </TableCell>
-                    <TableCell align="right" sx={{ fontSize: 17 }}>
-                      R$ {subtotalFormat(row.price, row.quantity)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-                <TableRow>
-                  <TableCell
-                    align="left"
-                    sx={{ fontSize: 20, fontWeight: "bold" }}
-                  >
-                    Total
-                  </TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{ fontSize: 20, fontWeight: "bold" }}
-                  >
-                    R$ {total}
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    R$ {subtotalFormat(row.price, row.quantity)}
                   </TableCell>
                 </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Grid
-            item
-            justifyContent="space-evenly"
-            display="flex"
-            width="100%"
-            mt={3}
-          >
+              ))}
+              <TableRow>
+                <TableCell
+                  align="left"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  Total
+                </TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontSize: 20, fontWeight: "bold" }}
+                >
+                  R$ {total}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Grid item justifyContent="space-evenly" display="flex" mt={3}>
             <Button
               sx={{ border: "solid", backgroundColor: "#FFF", color: "#000" }}
               onClick={(e) => {
@@ -177,9 +167,26 @@ export function Cart() {
               Continuar para pagamento
             </Button>
           </Grid>
-        </>
+        </Grid>
       ) : (
-        <Typography>Carrinho vazio!</Typography>
+        <Grid
+          item
+          border={1}
+          sx={{
+            backgroundColor: "#FFF",
+            padding: 1,
+            marginTop: 5,
+            textAlign: "center",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: 25,
+            }}
+          >
+            Carrinho vazio.
+          </Typography>
+        </Grid>
       )}
     </Grid>
   );

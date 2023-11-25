@@ -14,14 +14,24 @@ export default function Contact() {
           Informações de Contato &#128222;
         </Typography>
         <Typography variant="h5" mt={8}>
-          Telefone: +55(49)3322-1058
+          <span style={{ background: "#FFF", lineHeight: 0 }}>
+            Telefone: +55(49)3322-1058
+          </span>
         </Typography>
-        <Typography variant="h5">WhatsApp: +55(49)98817-4925</Typography>
-        <Typography variant="h5" mt={4}>
-          E-mail: falecom@padariadonana.com.br
+        <Typography variant="h5">
+          <span style={{ background: "#FFF", lineHeight: 0 }}>
+            WhatsApp: +55(49)98817-4925
+          </span>
         </Typography>
         <Typography variant="h5" mt={4}>
-          Endereço: Rua Sete de Setembro, 620-D, Bairro Presidente Médici
+          <span style={{ background: "#FFF", lineHeight: 0 }}>
+            E-mail: falecom@padariadonana.com.br
+          </span>
+        </Typography>
+        <Typography variant="h5" mt={4}>
+          <span style={{ background: "#FFF", lineHeight: 0 }}>
+            Endereço: Rua Sete de Setembro, 620-D, Bairro Presidente Médici
+          </span>
         </Typography>
       </Grid>
     </Grid>
