@@ -19,11 +19,16 @@ import Cookies from "js-cookie";
 export function Orders() {
   const id_user = Cookies.get("user_id");
   const [userOrders, setUserOrders] = useState([]);
+  const [currentOrder, setCurrentOrder] = useState();
   const [openDetails, setOpenDetails] = useState(false);
   const [openRate, setOpenRate] = useState(false);
   const [rating, setRating] = useState(2);
 
-  const handleOpenDetails = () => setOpenDetails(true);
+  const handleOpenDetails = (order_details) => {
+    setOpenDetails(true);
+    setCurrentOrder(order_details);
+  };
+
   const handleCloseDetails = () => setOpenDetails(false);
   const handleOpenRate = () => setOpenRate(true);
   const handleCloseRate = () => setOpenRate(false);
@@ -66,7 +71,13 @@ export function Orders() {
           >
             <Typography fontSize={40}>Pedidos</Typography>
           </Grid>
-          <Grid item mt={5} md={11} lg={11} sx={{ backgroundColor: "#FFF" }}>
+          <Grid
+            item
+            mt={5}
+            md={11}
+            lg={11}
+            sx={{ backgroundColor: "#FFF", border: 1 }}
+          >
             <Modal
               open={openDetails}
               onClose={handleCloseDetails}
@@ -77,9 +88,16 @@ export function Orders() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                border: 1,
               }}
             >
-              <Grid item lg={4} md={8} xs={12} sx={{ backgroundColor: "#FFF" }}>
+              <Grid
+                item
+                lg={4}
+                md={8}
+                xs={12}
+                sx={{ backgroundColor: "#FFF", border: 2 }}
+              >
                 <Typography fontSize={20} fontWeight={"bold"} mt={2} ml={2}>
                   Detalhes do Pedido
                 </Typography>
@@ -107,19 +125,30 @@ export function Orders() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell align="left" sx={{ fontSize: 17 }}>
-                        Produto
-                      </TableCell>
-                      <TableCell align="right" sx={{ fontSize: 17 }}>
-                        Quantidade
-                      </TableCell>
-                      <TableCell align="right" sx={{ fontSize: 17 }}>
-                        Preço
-                      </TableCell>
-                    </TableRow>
+                    {currentOrder !== undefined && (
+                      <>
+                        {currentOrder.order_items_relation.map((row) => (
+                          <TableRow
+                            key={row.product_relation.name}
+                            sx={{
+                              "&:last-child td, &:last-child th": {
+                                border: 0,
+                              },
+                            }}
+                          >
+                            <TableCell align="left" sx={{ fontSize: 17 }}>
+                              {row.product_relation.name}
+                            </TableCell>
+                            <TableCell align="right" sx={{ fontSize: 17 }}>
+                              {row.quantity}
+                            </TableCell>
+                            <TableCell align="right" sx={{ fontSize: 17 }}>
+                              R$ {totalFormat(row.product_relation.price)}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </>
+                    )}
                   </TableBody>
                 </Table>
               </Grid>
@@ -223,7 +252,13 @@ export function Orders() {
                     </TableCell>
                     <TableCell align="right" width={"10%"}>
                       <Grid>
-                        <IconButton color="inherit" onClick={handleOpenDetails}>
+                        <IconButton
+                          color="inherit"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleOpenDetails(row);
+                          }}
+                        >
                           <DescriptionIcon />
                         </IconButton>
                         <Button
