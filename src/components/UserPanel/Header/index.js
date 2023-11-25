@@ -11,7 +11,12 @@ export function UserPanelHeader() {
         container
         justifyContent={"space-around"}
         alignItems={"center"}
-        sx={{ backgroundColor: "#D9D9D9", fontSize: 20, padding: 1 }}
+        sx={{
+          backgroundColor: "#D9D9D9",
+          fontSize: 20,
+          padding: 1,
+          borderBottom: 1,
+        }}
       >
         <Grid item>
           <Typography fontSize={25}>Olá, {username}</Typography>

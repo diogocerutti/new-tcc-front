@@ -24,6 +24,23 @@ export function Orders() {
   const [openRate, setOpenRate] = useState(false);
   const [rating, setRating] = useState(2);
 
+  const statusColor = (status) => {
+    switch (status) {
+      case "Aguardando pagamento":
+        return "gray";
+      case "Em preparação":
+        return "#ffa500";
+      case "Em movimento":
+        return "#00d2ff";
+      case "Finalizado":
+        return "#008000";
+      case "Cancelado":
+        return "#ff0000";
+      default:
+        return "black";
+    }
+  };
+
   const handleOpenDetails = (order_details) => {
     setOpenDetails(true);
     setCurrentOrder(order_details);
@@ -170,7 +187,7 @@ export function Orders() {
                 lg={3}
                 md={4}
                 xs={12}
-                sx={{ backgroundColor: "#FFF", textAlign: "center" }}
+                sx={{ backgroundColor: "#FFF", textAlign: "center", border: 2 }}
               >
                 <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
                   Como você avalia o pedido?
@@ -244,8 +261,20 @@ export function Orders() {
                     <TableCell align="right" sx={{ fontSize: 17 }}>
                       {row.hour}
                     </TableCell>
-                    <TableCell align="right" sx={{ fontSize: 17 }}>
-                      {row.order_status_relation.status}
+                    <TableCell
+                      align="right"
+                      sx={{
+                        fontSize: 17,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          color: statusColor(row.order_status_relation.status),
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {row.order_status_relation.status}
+                      </Typography>
                     </TableCell>
                     <TableCell align="right" sx={{ fontSize: 17 }}>
                       R$ {totalFormat(row.total)}
