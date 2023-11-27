@@ -1,6 +1,7 @@
 import { Typography, Grid, Box, TextField, Button } from "@mui/material";
 import { useState, useCallback, useEffect } from "react";
 import {
+  createUserAddress,
   getUserAddress,
   updateUserAddress,
 } from "../../../api/user_address/index.js";
@@ -12,6 +13,7 @@ export function Address() {
   const [address, setAddress] = useState("");
   const [postal_code, setPostal_code] = useState("");
   const [city, setCity] = useState("");
+  const [hasAddress, setHasAddress] = useState();
 
   const handleChange = (event) => {
     switch (event.target.name) {
@@ -38,18 +40,29 @@ export function Address() {
       city: city,
     };
 
-    if (data.address || data.postal_code || data.city === "") {
+    if (data.address === "" || data.postal_code === "" || data.city === "") {
       alert("Todos os campos são obrigatórios!");
     } else {
-      await updateUserAddress(id_user, data).then(
-        alert("Endereço Atualizado!")
-      );
+      if (hasAddress === true) {
+        await updateUserAddress(id_user, data).then(
+          alert("Endereço Atualizado!")
+        );
+      }
+      if (hasAddress === false) {
+        await createUserAddress(id_user, data).then(
+          alert("Endereço Criado!"),
+          setHasAddress(true)
+        );
+      }
     }
   };
 
   const handleGetUserAddress = useCallback(async () => {
     const response = await getUserAddress(id_user);
-    if (!response.msg) {
+    if (response.msg) {
+      setHasAddress(false);
+    } else {
+      setHasAddress(true);
       setAddress(response.address);
       setCity(response.city);
       setPostal_code(response.postal_code);
@@ -58,7 +71,8 @@ export function Address() {
 
   useEffect(() => {
     handleGetUserAddress();
-  }, [handleGetUserAddress]);
+    console.log(hasAddress);
+  }, [handleGetUserAddress, hasAddress]);
 
   return (
     <Grid container justifyContent={"center"}>
@@ -78,6 +92,7 @@ export function Address() {
       >
         <Typography fontSize={40}>Endereço</Typography>
         <TextField
+          autoComplete="off"
           InputLabelProps={{ shrink: true }}
           type="text"
           required
@@ -89,6 +104,7 @@ export function Address() {
           onChange={handleChange}
         />
         <TextField
+          autoComplete="off"
           InputLabelProps={{ shrink: true }}
           type="text"
           required
@@ -100,6 +116,7 @@ export function Address() {
           onChange={handleChange}
         />
         <TextField
+          autoComplete="off"
           InputLabelProps={{ shrink: true }}
           type="text"
           required
