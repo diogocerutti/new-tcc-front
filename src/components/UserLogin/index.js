@@ -17,7 +17,7 @@ export default function UserLoginForm({ type }) {
       userLogin(payload).then((res) => {
         // ele vai sempre entrar no .then(), mesmo que haja erro (não sei pq)
         if (res.name === "AxiosError") {
-          console.log("DEU ERRO!", res.response.data.msg); // mensagem de erro do BACK
+          alert("E-mail ou senha incorretos."); // mensagem de erro do BACK
         } else {
           console.log("DEU CERTO!", res);
           alert("LOGADO COM SUCESSO");
@@ -74,7 +74,7 @@ export default function UserLoginForm({ type }) {
             label="Senha"
             name="password"
             type="password"
-            autoComplete="current-password"
+            autoComplete="false"
           />
           <Button
             type="submit"
@@ -106,6 +106,7 @@ export default function UserLoginForm({ type }) {
             Cadastre-se
           </Typography>
           <TextField
+            autoComplete="false"
             required
             fullWidth
             id="name"
@@ -119,7 +120,7 @@ export default function UserLoginForm({ type }) {
             id="emailRegister"
             label="Email"
             name="emailRegister"
-            autoComplete="email"
+            autoComplete="false"
             autoFocus
           />
           <TextField
@@ -129,6 +130,7 @@ export default function UserLoginForm({ type }) {
             label="Senha"
             name="passwordRegister"
             type="password"
+            autoComplete="false"
           />
           <TextField
             required
@@ -137,6 +139,7 @@ export default function UserLoginForm({ type }) {
             label="Confirmar Senha"
             name="confirmPassword"
             type="password"
+            autoComplete="false"
           />
           <TextField
             required
@@ -145,6 +148,7 @@ export default function UserLoginForm({ type }) {
             label="Telefone"
             name="phone"
             type="tel"
+            autoComplete="false"
           />
           <Button
             type="submit"

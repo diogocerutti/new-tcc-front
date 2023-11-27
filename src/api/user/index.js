@@ -58,7 +58,17 @@ export async function getOneUser(id) {
       return response.data;
     }
   } catch (error) {
-    console.log(error);
-    return [];
+    return error;
+  }
+}
+
+export async function updateUser(id_user, data) {
+  try {
+    const response = await api.put(`/user/${id_user}`, data);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    return error;
   }
 }

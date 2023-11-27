@@ -30,5 +30,6 @@ export async function updateUserAddress(id_user, data) {
     }
   } catch (error) {
     console.log("ERRO AO EDITAR ENDEREÇO: ", error);
+    return error;
   }
 }
