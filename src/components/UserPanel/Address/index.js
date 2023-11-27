@@ -71,8 +71,7 @@ export function Address() {
 
   useEffect(() => {
     handleGetUserAddress();
-    console.log(hasAddress);
-  }, [handleGetUserAddress, hasAddress]);
+  }, [handleGetUserAddress]);
 
   return (
     <Grid container justifyContent={"center"}>

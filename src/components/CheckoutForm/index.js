@@ -197,7 +197,6 @@ export function CheckoutForm() {
                 />
               </Grid>
             </Grid>
-
             <FormControl>
               <FormLabel
                 id="payment_types"
