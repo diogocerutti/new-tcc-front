@@ -1,32 +1,77 @@
 import { Button, TextField, Box, Typography, Grid } from "@mui/material";
-import { userLogin } from "../../api/user";
+import { userLogin, createUser } from "../../api/user";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-export default function UserLoginForm({ type }) {
+export default function UserLoginForm() {
   let navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    if (type === "login") {
-      event.preventDefault();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-      const payload = {
-        email: event.currentTarget.email.value,
-        password: event.currentTarget.password.value,
-      };
-
-      userLogin(payload).then((res) => {
-        // ele vai sempre entrar no .then(), mesmo que haja erro (não sei pq)
-        if (res.name === "AxiosError") {
-          alert("E-mail ou senha incorretos."); // mensagem de erro do BACK
-        } else {
-          console.log("DEU CERTO!", res);
-          alert("LOGADO COM SUCESSO");
-          return navigate("/");
-        }
-      });
-    } else {
-      console.log("Algo deu errado.");
+  const handleChange = (event) => {
+    switch (event.target.name) {
+      case "name":
+        setName(event.target.value);
+        break;
+      case "emailRegister":
+        setEmail(event.target.value);
+        break;
+      case "phone":
+        setPhone(event.target.value);
+        break;
+      case "passwordRegister":
+        setPassword(event.target.value);
+        break;
+      case "confirmPassword":
+        setConfirmPassword(event.target.value);
+        break;
+      default:
+        return "";
     }
+  };
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+
+    const payload = {
+      email: event.currentTarget.email.value,
+      password: event.currentTarget.password.value,
+    };
+
+    userLogin(payload).then((res) => {
+      // ele vai sempre entrar no .then(), mesmo que haja erro (não sei pq)
+      if (res.name === "AxiosError") {
+        alert("E-mail ou senha incorretos."); // mensagem de erro do BACK
+      } else {
+        alert("LOGADO COM SUCESSO");
+        return navigate("/");
+      }
+    });
+  };
+
+  const handleRegister = async (event) => {
+    event.preventDefault();
+
+    const data = {
+      name: name,
+      email: email,
+      phone: phone,
+      password: password,
+      confirmPassword: confirmPassword,
+    };
+
+    await createUser(data).then((res) => {
+      if (res.name === "AxiosError") {
+        alert(res.response.data.msg); // mensagem de erro do BACK
+      } else {
+        alert("Cadastro feito com sucesso!");
+        return navigate("/");
+      }
+    });
   };
 
   return (
@@ -41,7 +86,7 @@ export default function UserLoginForm({ type }) {
       >
         <Box
           component="form"
-          onSubmit={handleSubmit}
+          onSubmit={handleLogin}
           noValidate
           width={"50%"}
           height={"50%"}
@@ -65,7 +110,6 @@ export default function UserLoginForm({ type }) {
             label="Email"
             name="email"
             autoComplete="email"
-            autoFocus
           />
           <TextField
             required
@@ -74,7 +118,7 @@ export default function UserLoginForm({ type }) {
             label="Senha"
             name="password"
             type="password"
-            autoComplete="false"
+            autoComplete="off"
           />
           <Button
             type="submit"
@@ -87,7 +131,7 @@ export default function UserLoginForm({ type }) {
         </Box>
         <Box
           component="form"
-          onSubmit={handleSubmit}
+          onSubmit={handleRegister}
           noValidate
           width={"50%"}
           justifyContent={"space-between"}
@@ -106,13 +150,15 @@ export default function UserLoginForm({ type }) {
             Cadastre-se
           </Typography>
           <TextField
-            autoComplete="false"
+            autoComplete="off"
             required
             fullWidth
             id="name"
             label="Nome"
             name="name"
             autoFocus
+            value={name}
+            onChange={handleChange}
           />
           <TextField
             required
@@ -120,8 +166,9 @@ export default function UserLoginForm({ type }) {
             id="emailRegister"
             label="Email"
             name="emailRegister"
-            autoComplete="false"
-            autoFocus
+            autoComplete="off"
+            value={email}
+            onChange={handleChange}
           />
           <TextField
             required
@@ -130,7 +177,9 @@ export default function UserLoginForm({ type }) {
             label="Senha"
             name="passwordRegister"
             type="password"
-            autoComplete="false"
+            autoComplete="off"
+            value={password}
+            onChange={handleChange}
           />
           <TextField
             required
@@ -139,7 +188,9 @@ export default function UserLoginForm({ type }) {
             label="Confirmar Senha"
             name="confirmPassword"
             type="password"
-            autoComplete="false"
+            autoComplete="off"
+            value={confirmPassword}
+            onChange={handleChange}
           />
           <TextField
             required
@@ -148,7 +199,9 @@ export default function UserLoginForm({ type }) {
             label="Telefone"
             name="phone"
             type="tel"
-            autoComplete="false"
+            autoComplete="off"
+            value={phone}
+            onChange={handleChange}
           />
           <Button
             type="submit"

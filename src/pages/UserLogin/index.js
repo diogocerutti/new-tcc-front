@@ -5,7 +5,7 @@ export function UserLoginPage() {
   return (
     <>
       <UserNavbar />
-      <UserLoginForm type="login" />
+      <UserLoginForm />
     </>
   );
 }

@@ -72,3 +72,29 @@ export async function updateUser(id_user, data) {
     return error;
   }
 }
+
+export async function createUser(data) {
+  try {
+    const response = await api.post("/user", data);
+    if (response.status === 200) {
+      Cookies.set("user", response.data.token, {
+        expires: 1,
+        path: "/",
+        sameSite: "strict",
+      });
+      Cookies.set("user_id", response.data.user.id, {
+        expires: 1,
+        path: "/",
+        sameSite: "strict",
+      });
+      Cookies.set("user_name", response.data.user.name, {
+        expires: 1,
+        path: "/",
+        sameSite: "strict",
+      });
+      return response.data;
+    }
+  } catch (error) {
+    return error;
+  }
+}
