@@ -11,15 +11,33 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import UpdateModal from "./components/updateModal";
-import { useState } from "react";
+import ModalForm from "./components/ModalForm/index.js";
+import { useState, useCallback, useEffect } from "react";
+import {
+  getAllMeasures,
+  deleteMeasure,
+} from "../../../api/measure_type/index.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Measures() {
-  const [openUpdate, setOpenUpdate] = useState(false);
+  const navigate = useNavigate();
+  const [measures, setMeasures] = useState([]);
+  const [currentMeasure, setCurrentMeasure] = useState();
+  const [modalType, setModalType] = useState("");
 
-  const handleOpenUpdate = () => setOpenUpdate(true);
+  const [openModal, setOpenModal] = useState(false);
 
-  const handleCloseUpdate = () => setOpenUpdate(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const handleGetMeasures = useCallback(async () => {
+    const response = await getAllMeasures();
+    setMeasures(response);
+  }, []);
+
+  useEffect(() => {
+    handleGetMeasures();
+  }, [handleGetMeasures]);
 
   return (
     <>
@@ -32,7 +50,13 @@ export default function Measures() {
             justifyContent={"space-between"}
           >
             <Typography variant="h5">Unidades de Medida</Typography>
-            <IconButton>
+            <IconButton
+              onClick={(e) => {
+                e.preventDefault();
+                handleOpenModal();
+                setModalType("post");
+              }}
+            >
               <AddCircleIcon color="success" sx={{ fontSize: "3vw" }} />
             </IconButton>
           </Grid>
@@ -60,80 +84,49 @@ export default function Measures() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  1
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  KG
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleOpenUpdate();
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Unidade de medida de produto excluída.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  2
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Unidade
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Unidade de medida de produto excluída.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  3
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Cento
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Unidade de medida de produto excluída.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
+              {measures.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell align="left" sx={{ fontSize: 17 }}>
+                    {row.id}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.measure}
+                  </TableCell>
+                  <TableCell align="right">
+                    <EditIcon
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleOpenModal();
+                        setCurrentMeasure(row);
+                        setModalType("put");
+                      }}
+                    />
+                    <DeleteIcon
+                      color="error"
+                      onClick={async () => {
+                        await deleteMeasure(row.id).then((res) => {
+                          if (res.name === "AxiosError") {
+                            alert(res.response.data.msg); // mensagem de erro do BACK
+                          } else {
+                            alert("Unidade de medida removida com sucesso!");
+                            return navigate(0);
+                          }
+                        });
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </Grid>
       </Grid>
-      <UpdateModal openUpdate={openUpdate} onCloseUpdate={handleCloseUpdate} />
+      <ModalForm
+        openModal={openModal}
+        onCloseModal={handleCloseModal}
+        rowMeasure={currentMeasure}
+        modalType={modalType}
+      />
     </>
   );
 }

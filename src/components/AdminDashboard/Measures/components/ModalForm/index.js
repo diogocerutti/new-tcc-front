@@ -1,45 +1,42 @@
 import { Button, Modal, Typography, Box, TextField, Grid } from "@mui/material";
 import { useState, useEffect } from "react";
-import {
-  updateCategory,
-  createCategory,
-} from "../../../../../api/product_category";
+import { updateMeasure, createMeasure } from "../../../../../api/measure_type";
 import { useNavigate } from "react-router-dom";
 
 export default function ModalForm({
   openModal,
   onCloseModal,
-  rowCategory,
+  rowMeasure,
   modalType,
 }) {
   const navigate = useNavigate();
-  const [category, setCategory] = useState("");
+  const [measure, setMeasure] = useState("");
 
-  const handleChangeCategory = (event) => setCategory(event.target.value);
+  const handleChangeMeasure = (event) => setMeasure(event.target.value);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const data = {
-      category: category,
+      measure: measure,
     };
 
     if (modalType === "put") {
-      await updateCategory(rowCategory.id, data).then((res) => {
+      await updateMeasure(rowMeasure.id, data).then((res) => {
         if (res.name === "AxiosError") {
           alert(res.response.data.msg); // mensagem de erro do BACK
         } else {
-          alert("Categoria de produto atualizada com sucesso!");
+          alert("Unidade de medida atualizada com sucesso!");
           return navigate(0);
         }
       });
     }
     if (modalType === "post") {
-      await createCategory(data).then((res) => {
+      await createMeasure(data).then((res) => {
         if (res.name === "AxiosError") {
           alert(res.response.data.msg); // mensagem de erro do BACK
         } else {
-          alert("Categoria de produto criada com sucesso!");
+          alert("Unidade de medida criada com sucesso!");
           return navigate(0);
         }
       });
@@ -48,14 +45,14 @@ export default function ModalForm({
 
   useEffect(() => {
     if (modalType === "put") {
-      if (rowCategory) {
-        setCategory(rowCategory.category);
+      if (rowMeasure) {
+        setMeasure(rowMeasure.measure);
       }
     }
     if (modalType === "post") {
-      setCategory("");
+      setMeasure("");
     }
-  }, [rowCategory, modalType]);
+  }, [rowMeasure, modalType]);
 
   return (
     <Modal open={openModal} onClose={onCloseModal}>
@@ -80,8 +77,8 @@ export default function ModalForm({
         >
           <Typography component="h1" variant="h5" color="black">
             {modalType === "put"
-              ? "Editar Categoria de produto"
-              : "Criar Categoria de produto"}
+              ? "Atualizar Unidade de medida"
+              : "Criar Unidade de medida"}
           </Typography>
           <TextField
             autoComplete="off"
@@ -92,9 +89,10 @@ export default function ModalForm({
             id="status"
             name="status"
             label="Status"
-            value={category}
-            onChange={handleChangeCategory}
+            value={measure}
+            onChange={handleChangeMeasure}
           />
+
           <Grid item mt={2} display={"flex"} justifyContent={"center"}>
             <Button
               type="submit"
