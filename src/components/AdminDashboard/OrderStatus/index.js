@@ -12,14 +12,32 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import UpdateModal from "./components/updateModal";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
+import {
+  getAllOrderStatus,
+  deleteOrderStatus,
+} from "../../../api/order_status/index.js";
+import { useNavigate } from "react-router-dom";
 
 export default function OrderStatus() {
+  const navigate = useNavigate();
+  const [status, setStatus] = useState([]);
+  const [currentStatus, setCurrentStatus] = useState();
+
   const [openUpdate, setOpenUpdate] = useState(false);
 
   const handleOpenUpdate = () => setOpenUpdate(true);
 
   const handleCloseUpdate = () => setOpenUpdate(false);
+
+  const handleGetStatus = useCallback(async () => {
+    const response = await getAllOrderStatus();
+    setStatus(response);
+  }, []);
+
+  useEffect(() => {
+    handleGetStatus();
+  }, [handleGetStatus]);
 
   return (
     <>
@@ -60,126 +78,47 @@ export default function OrderStatus() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  1
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Aguardando pagamento
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleOpenUpdate();
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Status de pedido excluído.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  2
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Em preparação
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Status de pedido excluído.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  3
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Em movimento
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Status de pedido excluído.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  4
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Finalizado
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Status de pedido excluído.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  5
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Cancelado
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Status de pedido excluído.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
+              {status.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell align="left" sx={{ fontSize: 17 }}>
+                    {row.id}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.status}
+                  </TableCell>
+                  <TableCell align="right">
+                    <EditIcon
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleOpenUpdate();
+                        setCurrentStatus(row);
+                      }}
+                    />
+                    <DeleteIcon
+                      color="error"
+                      onClick={async () => {
+                        await deleteOrderStatus(row.id).then((res) => {
+                          if (res.name === "AxiosError") {
+                            alert(res.response.data.msg); // mensagem de erro do BACK
+                          } else {
+                            alert("Status de pedido removido com sucesso!");
+                            return navigate(0);
+                          }
+                        });
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </Grid>
       </Grid>
-      <UpdateModal openUpdate={openUpdate} onCloseUpdate={handleCloseUpdate} />
+      <UpdateModal
+        openUpdate={openUpdate}
+        onCloseUpdate={handleCloseUpdate}
+        rowStatus={currentStatus}
+      />
     </>
   );
 }

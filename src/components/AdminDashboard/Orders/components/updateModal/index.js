@@ -11,19 +11,80 @@ import {
   FormLabel,
   RadioGroup,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { updateOrder } from "../../../../../api/order";
+import { useNavigate } from "react-router-dom";
 
-export default function UpdateModal({ openUpdate, onCloseUpdate }) {
+export default function UpdateModal({ openUpdate, onCloseUpdate, rowOrder }) {
+  const navigate = useNavigate();
   const [orderStatus, setOrderStatus] = useState("1");
+  const [orderDate, setOrderDate] = useState("");
+  const [orderHour, setOrderHour] = useState("");
 
-  const handleChangeOrderStatus = (event) => {
-    setOrderStatus(event.target.value);
+  function dateFormat(date) {
+    let newDate;
+    newDate =
+      date.substring(8, 10) +
+      "/" +
+      date.substring(5, 7) +
+      "/" +
+      date.substring(0, 4);
+    return newDate;
+  }
+
+  function dateUnformat(date) {
+    let newDate;
+    newDate =
+      date.substring(6, 10) +
+      "-" +
+      date.substring(3, 5) +
+      "-" +
+      date.substring(0, 2);
+    return newDate;
+  }
+
+  const handleChange = (event) => {
+    switch (event.target.name) {
+      case "date":
+        setOrderDate(event.target.value);
+        break;
+      case "hour":
+        setOrderHour(event.target.value);
+        break;
+      case "order_status":
+        setOrderStatus(event.target.value);
+        break;
+      default:
+        return "";
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    alert("Pedido Atualizado!");
+
+    let data = {
+      date: dateFormat(orderDate),
+      hour: orderHour,
+      id_status: orderStatus,
+    };
+
+    if (data.date === "//" || data.hour === "") {
+      alert("Todos os campos são obrigatórios!");
+    } else {
+      await updateOrder(rowOrder.id, data).then(
+        alert("Pedido Atualizado com sucesso!"),
+        navigate(0)
+      );
+    }
   };
+
+  useEffect(() => {
+    if (rowOrder) {
+      setOrderStatus(rowOrder.id_status);
+      setOrderDate(dateUnformat(rowOrder.date));
+      setOrderHour(rowOrder.hour);
+    }
+  }, [rowOrder]);
 
   return (
     <Modal open={openUpdate} onClose={onCloseUpdate}>
@@ -49,6 +110,7 @@ export default function UpdateModal({ openUpdate, onCloseUpdate }) {
             Atualizar Pedido
           </Typography>
           <TextField
+            autoComplete="off"
             type="date"
             margin="normal"
             required
@@ -56,9 +118,11 @@ export default function UpdateModal({ openUpdate, onCloseUpdate }) {
             id="date"
             name="date"
             label="Data"
-            value="2023-12-19"
+            value={orderDate}
+            onChange={handleChange}
           />
           <TextField
+            autoComplete="off"
             type="time"
             margin="normal"
             required
@@ -66,7 +130,8 @@ export default function UpdateModal({ openUpdate, onCloseUpdate }) {
             id="hour"
             name="hour"
             label="Hora"
-            value="15:00"
+            value={orderHour}
+            onChange={handleChange}
           />
           <FormControl>
             <FormLabel id="order_status">Status</FormLabel>
@@ -74,7 +139,7 @@ export default function UpdateModal({ openUpdate, onCloseUpdate }) {
               defaultValue="1"
               name="order_status"
               value={orderStatus}
-              onChange={handleChangeOrderStatus}
+              onChange={handleChange}
             >
               <FormControlLabel
                 value="1"

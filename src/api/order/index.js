@@ -1,5 +1,17 @@
 import { api } from "..";
 
+export async function getAllOrders() {
+  try {
+    const response = await api.get("/order");
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
 export async function getUserOrders(id_user) {
   try {
     const response = await api.get(`/order/${id_user}`);
@@ -32,5 +44,6 @@ export async function updateOrder(id, data) {
     }
   } catch (error) {
     console.log("ERRO AO EDITAR PEDIDO: ", error);
+    return error;
   }
 }

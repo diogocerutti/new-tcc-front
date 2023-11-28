@@ -1,10 +1,36 @@
 import { Button, Modal, Typography, Box, TextField, Grid } from "@mui/material";
+import { useState, useEffect } from "react";
+import { updateOrderStatus } from "../../../../../api/order_status";
+import { useNavigate } from "react-router-dom";
 
-export default function UpdateModal({ openUpdate, onCloseUpdate }) {
+export default function UpdateModal({ openUpdate, onCloseUpdate, rowStatus }) {
+  const navigate = useNavigate();
+  const [status, setStatus] = useState("");
+
+  const handleChangeStatus = (event) => setStatus(event.target.value);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    alert("Status de Pedido Atualizado!");
+
+    const data = {
+      status: status,
+    };
+
+    await updateOrderStatus(rowStatus.id, data).then((res) => {
+      if (res.name === "AxiosError") {
+        alert(res.response.data.msg); // mensagem de erro do BACK
+      } else {
+        alert("Status de pedido atualizado com sucesso!");
+        return navigate(0);
+      }
+    });
   };
+
+  useEffect(() => {
+    if (rowStatus) {
+      setStatus(rowStatus.status);
+    }
+  }, [rowStatus]);
 
   return (
     <Modal open={openUpdate} onClose={onCloseUpdate}>
@@ -31,6 +57,7 @@ export default function UpdateModal({ openUpdate, onCloseUpdate }) {
             Atualizar Status
           </Typography>
           <TextField
+            autoComplete="off"
             type="text"
             margin="normal"
             required
@@ -38,9 +65,9 @@ export default function UpdateModal({ openUpdate, onCloseUpdate }) {
             id="status"
             name="status"
             label="Status"
-            value="Aguardando Pagamento"
+            value={status}
+            onChange={handleChangeStatus}
           />
-
           <Grid item mt={2} display={"flex"} justifyContent={"center"}>
             <Button
               type="submit"

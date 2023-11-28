@@ -341,7 +341,8 @@ export default function Products() {
                   </TableCell>
                   <TableCell align="right">
                     <EditIcon
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.preventDefault();
                         handleOpenUpdate();
                         setCurrentData(row);
                       }}

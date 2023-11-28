@@ -111,6 +111,7 @@ export default function UpdateModal({
             Atualizar Produto
           </Typography>
           <TextField
+            autoComplete="off"
             type="text"
             margin="normal"
             required
@@ -122,6 +123,7 @@ export default function UpdateModal({
             onChange={handleChangeName}
           />
           <TextField
+            autoComplete="off"
             type="number"
             margin="normal"
             required
@@ -134,6 +136,7 @@ export default function UpdateModal({
           />
           <Grid item display={"flex"} columnGap={5}>
             <TextField
+              autoComplete="off"
               select
               margin="normal"
               required
@@ -151,6 +154,7 @@ export default function UpdateModal({
               ))}
             </TextField>
             <TextField
+              autoComplete="off"
               select
               margin="normal"
               required
@@ -168,8 +172,8 @@ export default function UpdateModal({
               ))}
             </TextField>
           </Grid>
-
           <TextField
+            autoComplete="off"
             type="text"
             margin="normal"
             fullWidth
@@ -205,7 +209,6 @@ export default function UpdateModal({
               id="update"
               variant="contained"
               color="success"
-              mt
             >
               Atualizar
             </Button>

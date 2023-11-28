@@ -13,7 +13,8 @@ import finished from "../../../images/finalizado.png";
 import moviment from "../../../images/movimento.png";
 import prepare from "../../../images/preparacao.png";
 import UpdateModal from "./components/updateModal";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { getAllOrders } from "../../../api/order";
 
 export default function Orders() {
   const orderImg = [
@@ -23,11 +24,40 @@ export default function Orders() {
     { title: "Em preparação", image: prepare },
   ];
 
+  const statusColor = (status) => {
+    switch (status) {
+      case "Em preparação":
+        return "#f9d34f";
+      case "Aguardando pagamento":
+        return "#dddddd";
+      case "Em movimento":
+        return "#70e3fc";
+      case "Finalizado":
+        return "#8ad072";
+      case "Cancelado":
+        return "#ef6363";
+      default:
+        return "#FFF";
+    }
+  };
+
+  const [orders, setOrders] = useState([]);
+  const [currentOrder, setCurrentOrder] = useState();
+
   const [openUpdate, setOpenUpdate] = useState(false);
 
   const handleOpenUpdate = () => setOpenUpdate(true);
 
   const handleCloseUpdate = () => setOpenUpdate(false);
+
+  const handleGetOrders = useCallback(async () => {
+    const response = await getAllOrders();
+    setOrders(response);
+  }, []);
+
+  useEffect(() => {
+    handleGetOrders();
+  }, [handleGetOrders]);
 
   return (
     <>
@@ -105,123 +135,53 @@ export default function Orders() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow sx={{ backgroundColor: "#F9D34F" }}>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  8
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Amanda Souza
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Rua Borges de Medeiros, 320-D
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  (49)988774501
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  19/12/2023
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  15:00
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow sx={{ backgroundColor: "#EF6363" }}>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  9
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Pedro Araújo
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Rua Cascavel, 70-D
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  (49)984392211
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  10/12/2023
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  19:00
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow sx={{ backgroundColor: "#70E3FC" }}>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  10
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Cleber Pereira
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Rua Assis Brasil, 400-D
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  (49)988905533
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  07/12/2023
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  10:00
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow sx={{ backgroundColor: "#8AD072" }}>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  11
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Cinthia Cruz
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Rua Madeireira, 400-D
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  (49)977512345
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  09/12/2023
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  10:00
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleOpenUpdate();
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
+              {orders.map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{
+                    backgroundColor: statusColor(
+                      row.order_status_relation.status
+                    ),
+                  }}
+                >
+                  <TableCell align="left" sx={{ fontSize: 17 }}>
+                    {row.id}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.user_relation.name}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.user_relation.user_address_relation.address}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.user_relation.phone}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.date}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.hour}
+                  </TableCell>
+                  <TableCell align="right">
+                    <EditIcon
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleOpenUpdate();
+                        setCurrentOrder(row);
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </Grid>
       </Grid>
-      <UpdateModal openUpdate={openUpdate} onCloseUpdate={handleCloseUpdate} />
+      <UpdateModal
+        openUpdate={openUpdate}
+        onCloseUpdate={handleCloseUpdate}
+        rowOrder={currentOrder}
+      />
     </>
   );
 }
