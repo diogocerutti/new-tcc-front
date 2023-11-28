@@ -1,45 +1,45 @@
 import { Button, Modal, Typography, Box, TextField, Grid } from "@mui/material";
 import { useState, useEffect } from "react";
 import {
-  updateOrderStatus,
-  createOrderStatus,
-} from "../../../../../api/order_status";
+  updatePaymentType,
+  createPaymentType,
+} from "../../../../../api/payment_type";
 import { useNavigate } from "react-router-dom";
 
 export default function ModalForm({
   openModal,
   onCloseModal,
-  rowStatus,
+  rowType,
   modalType,
 }) {
   const navigate = useNavigate();
-  const [status, setStatus] = useState("");
+  const [type, setType] = useState("");
 
-  const handleChangeStatus = (event) => setStatus(event.target.value);
+  const handleChangeType = (event) => setType(event.target.value);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const data = {
-      status: status,
+      type: type,
     };
 
     if (modalType === "put") {
-      await updateOrderStatus(rowStatus.id, data).then((res) => {
+      await updatePaymentType(rowType.id, data).then((res) => {
         if (res.name === "AxiosError") {
           alert(res.response.data.msg); // mensagem de erro do BACK
         } else {
-          alert("Status de pedido atualizado com sucesso!");
+          alert("Tipo de pagamento atualizado com sucesso!");
           return navigate(0);
         }
       });
     }
     if (modalType === "post") {
-      await createOrderStatus(data).then((res) => {
+      await createPaymentType(data).then((res) => {
         if (res.name === "AxiosError") {
           alert(res.response.data.msg); // mensagem de erro do BACK
         } else {
-          alert("Status de pedido criado com sucesso!");
+          alert("Tipo de pagamento criado com sucesso!");
           return navigate(0);
         }
       });
@@ -48,14 +48,14 @@ export default function ModalForm({
 
   useEffect(() => {
     if (modalType === "put") {
-      if (rowStatus) {
-        setStatus(rowStatus.status);
+      if (rowType) {
+        setType(rowType.type);
       }
     }
     if (modalType === "post") {
-      setStatus("");
+      setType("");
     }
-  }, [rowStatus, modalType]);
+  }, [rowType, modalType]);
 
   return (
     <Modal open={openModal} onClose={onCloseModal}>
@@ -79,7 +79,9 @@ export default function ModalForm({
           }} /* encType="multipart/form-data" */
         >
           <Typography component="h1" variant="h5" color="black">
-            {modalType === "put" ? "Editar Status" : "Criar Status"}
+            {modalType === "put"
+              ? "Editar Tipo de pagamento"
+              : "Criar Tipo de pagamento"}
           </Typography>
           <TextField
             autoComplete="off"
@@ -90,8 +92,8 @@ export default function ModalForm({
             id="status"
             name="status"
             label="Status"
-            value={status}
-            onChange={handleChangeStatus}
+            value={type}
+            onChange={handleChangeType}
           />
           <Grid item mt={2} display={"flex"} justifyContent={"center"}>
             <Button

@@ -11,15 +11,33 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import UpdateModal from "./components/updateModal";
-import { useState } from "react";
+import ModalForm from "./components/ModalForm";
+import { useState, useCallback, useEffect } from "react";
+import {
+  getAllPaymentTypes,
+  deletePaymentType,
+} from "../../../api/payment_type";
+import { useNavigate } from "react-router-dom";
 
 export default function PaymentTypes() {
-  const [openUpdate, setOpenUpdate] = useState(false);
+  const navigate = useNavigate();
+  const [types, setTypes] = useState([]);
+  const [currentType, setCurrentType] = useState();
+  const [modalType, setModalType] = useState("");
 
-  const handleOpenUpdate = () => setOpenUpdate(true);
+  const [openModal, setOpenModal] = useState(false);
 
-  const handleCloseUpdate = () => setOpenUpdate(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const handleGetTypes = useCallback(async () => {
+    const response = await getAllPaymentTypes();
+    setTypes(response);
+  }, []);
+
+  useEffect(() => {
+    handleGetTypes();
+  }, [handleGetTypes]);
 
   return (
     <>
@@ -32,7 +50,13 @@ export default function PaymentTypes() {
             justifyContent={"space-between"}
           >
             <Typography variant="h5">Tipos de pagamento</Typography>
-            <IconButton>
+            <IconButton
+              onClick={(e) => {
+                e.preventDefault();
+                handleOpenModal();
+                setModalType("post");
+              }}
+            >
               <AddCircleIcon color="success" sx={{ fontSize: "3vw" }} />
             </IconButton>
           </Grid>
@@ -60,57 +84,49 @@ export default function PaymentTypes() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  1
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Crédito
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleOpenUpdate();
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Tipo de pagamento excluído.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  2
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Pix
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Tipo de pagamento excluído.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
+              {types.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell align="left" sx={{ fontSize: 17 }}>
+                    {row.id}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.type}
+                  </TableCell>
+                  <TableCell align="right">
+                    <EditIcon
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleOpenModal();
+                        setCurrentType(row);
+                        setModalType("put");
+                      }}
+                    />
+                    <DeleteIcon
+                      color="error"
+                      onClick={async () => {
+                        await deletePaymentType(row.id).then((res) => {
+                          if (res.name === "AxiosError") {
+                            alert(res.response.data.msg); // mensagem de erro do BACK
+                          } else {
+                            alert("Tipo de pagamento removido com sucesso!");
+                            return navigate(0);
+                          }
+                        });
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </Grid>
       </Grid>
-      <UpdateModal openUpdate={openUpdate} onCloseUpdate={handleCloseUpdate} />
+      <ModalForm
+        openModal={openModal}
+        onCloseModal={handleCloseModal}
+        rowType={currentType}
+        modalType={modalType}
+      />
     </>
   );
 }

@@ -11,15 +11,33 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import UpdateModal from "./components/updateModal";
-import { useState } from "react";
+import ModalForm from "./components/ModalForm";
+import { useState, useCallback, useEffect } from "react";
+import {
+  getAllCategories,
+  deleteCategory,
+} from "../../../api/product_category/index.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Categories() {
-  const [openUpdate, setOpenUpdate] = useState(false);
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [currentCategory, setCurrentCategory] = useState();
+  const [modalType, setModalType] = useState("");
 
-  const handleOpenUpdate = () => setOpenUpdate(true);
+  const [openModal, setOpenModal] = useState(false);
 
-  const handleCloseUpdate = () => setOpenUpdate(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const handleGetCategories = useCallback(async () => {
+    const response = await getAllCategories();
+    setCategories(response);
+  }, []);
+
+  useEffect(() => {
+    handleGetCategories();
+  }, [handleGetCategories]);
 
   return (
     <>
@@ -32,7 +50,13 @@ export default function Categories() {
             justifyContent={"space-between"}
           >
             <Typography variant="h5">Categorias de Produtos</Typography>
-            <IconButton>
+            <IconButton
+              onClick={(e) => {
+                e.preventDefault();
+                handleOpenModal();
+                setModalType("post");
+              }}
+            >
               <AddCircleIcon color="success" sx={{ fontSize: "3vw" }} />
             </IconButton>
           </Grid>
@@ -60,80 +84,49 @@ export default function Categories() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  1
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Tortas
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleOpenUpdate();
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Categoria de produto excluída.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  2
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Salgados
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Categoria de produto excluída.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  4
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Bebidas
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Categoria de produto excluída.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
+              {categories.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell align="left" sx={{ fontSize: 17 }}>
+                    {row.id}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.category}
+                  </TableCell>
+                  <TableCell align="right">
+                    <EditIcon
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleOpenModal();
+                        setCurrentCategory(row);
+                        setModalType("put");
+                      }}
+                    />
+                    <DeleteIcon
+                      color="error"
+                      onClick={async () => {
+                        await deleteCategory(row.id).then((res) => {
+                          if (res.name === "AxiosError") {
+                            alert(res.response.data.msg); // mensagem de erro do BACK
+                          } else {
+                            alert("Categoria de produto removida com sucesso!");
+                            return navigate(0);
+                          }
+                        });
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </Grid>
       </Grid>
-      <UpdateModal openUpdate={openUpdate} onCloseUpdate={handleCloseUpdate} />
+      <ModalForm
+        openModal={openModal}
+        onCloseModal={handleCloseModal}
+        rowCategory={currentCategory}
+        modalType={modalType}
+      />
     </>
   );
 }

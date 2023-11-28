@@ -1,45 +1,45 @@
 import { Button, Modal, Typography, Box, TextField, Grid } from "@mui/material";
 import { useState, useEffect } from "react";
 import {
-  updateOrderStatus,
-  createOrderStatus,
-} from "../../../../../api/order_status";
+  updateCategory,
+  createCategory,
+} from "../../../../../api/product_category";
 import { useNavigate } from "react-router-dom";
 
-export default function ModalForm({
+export default function UpdateModal({
   openModal,
   onCloseModal,
-  rowStatus,
+  rowCategory,
   modalType,
 }) {
   const navigate = useNavigate();
-  const [status, setStatus] = useState("");
+  const [category, setCategory] = useState("");
 
-  const handleChangeStatus = (event) => setStatus(event.target.value);
+  const handleChangeCategory = (event) => setCategory(event.target.value);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const data = {
-      status: status,
+      category: category,
     };
 
     if (modalType === "put") {
-      await updateOrderStatus(rowStatus.id, data).then((res) => {
+      await updateCategory(rowCategory.id, data).then((res) => {
         if (res.name === "AxiosError") {
           alert(res.response.data.msg); // mensagem de erro do BACK
         } else {
-          alert("Status de pedido atualizado com sucesso!");
+          alert("Categoria de produto atualizada com sucesso!");
           return navigate(0);
         }
       });
     }
     if (modalType === "post") {
-      await createOrderStatus(data).then((res) => {
+      await createCategory(data).then((res) => {
         if (res.name === "AxiosError") {
           alert(res.response.data.msg); // mensagem de erro do BACK
         } else {
-          alert("Status de pedido criado com sucesso!");
+          alert("Categoria de produto criada com sucesso!");
           return navigate(0);
         }
       });
@@ -48,14 +48,14 @@ export default function ModalForm({
 
   useEffect(() => {
     if (modalType === "put") {
-      if (rowStatus) {
-        setStatus(rowStatus.status);
+      if (rowCategory) {
+        setCategory(rowCategory.category);
       }
     }
     if (modalType === "post") {
-      setStatus("");
+      setCategory("");
     }
-  }, [rowStatus, modalType]);
+  }, [rowCategory, modalType]);
 
   return (
     <Modal open={openModal} onClose={onCloseModal}>
@@ -79,7 +79,9 @@ export default function ModalForm({
           }} /* encType="multipart/form-data" */
         >
           <Typography component="h1" variant="h5" color="black">
-            {modalType === "put" ? "Editar Status" : "Criar Status"}
+            {modalType === "put"
+              ? "Editar Categoria de produto"
+              : "Criar Categoria de produto"}
           </Typography>
           <TextField
             autoComplete="off"
@@ -90,8 +92,8 @@ export default function ModalForm({
             id="status"
             name="status"
             label="Status"
-            value={status}
-            onChange={handleChangeStatus}
+            value={category}
+            onChange={handleChangeCategory}
           />
           <Grid item mt={2} display={"flex"} justifyContent={"center"}>
             <Button
