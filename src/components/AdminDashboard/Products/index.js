@@ -39,6 +39,14 @@ export default function Products() {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState();
 
+  function priceFormat(price) {
+    if (price.includes(".")) {
+      return price.replace(".", ",") + "0";
+    } else {
+      return price + ",00";
+    }
+  }
+
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -147,6 +155,7 @@ export default function Products() {
               Cadastrar Produto
             </Typography>
             <TextField
+              autoComplete="off"
               type="text"
               margin="normal"
               required
@@ -157,6 +166,7 @@ export default function Products() {
               onChange={handleChangeName}
             />
             <TextField
+              autoComplete="off"
               type="number"
               margin="normal"
               required
@@ -168,6 +178,7 @@ export default function Products() {
             />
             <Grid item display={"flex"} columnGap={5}>
               <TextField
+                autoComplete="off"
                 select
                 margin="normal"
                 required
@@ -185,6 +196,7 @@ export default function Products() {
                 ))}
               </TextField>
               <TextField
+                autoComplete="off"
                 select
                 margin="normal"
                 required
@@ -203,6 +215,7 @@ export default function Products() {
               </TextField>
             </Grid>
             <TextField
+              autoComplete="off"
               type="text"
               margin="normal"
               fullWidth
@@ -321,7 +334,7 @@ export default function Products() {
                     {row.name}
                   </TableCell>
                   <TableCell align="right" sx={{ fontSize: 17 }}>
-                    {row.price}
+                    R$ {priceFormat(row.price)}
                   </TableCell>
                   <TableCell align="right" sx={{ fontSize: 17 }}>
                     {row.measure}

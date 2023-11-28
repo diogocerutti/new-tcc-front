@@ -79,7 +79,9 @@ export default function ModalForm({
           }} /* encType="multipart/form-data" */
         >
           <Typography component="h1" variant="h5" color="black">
-            {modalType === "put" ? "Editar Status" : "Criar Status"}
+            {modalType === "put"
+              ? "Editar Status de pedido"
+              : "Criar Status de pedido"}
           </Typography>
           <TextField
             autoComplete="off"
