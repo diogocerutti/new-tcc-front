@@ -11,7 +11,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import UpdateModal from "./components/updateModal";
+import ModalForm from "./components/ModalForm/index.js";
 import { useState, useCallback, useEffect } from "react";
 import {
   getAllOrderStatus,
@@ -23,12 +23,12 @@ export default function OrderStatus() {
   const navigate = useNavigate();
   const [status, setStatus] = useState([]);
   const [currentStatus, setCurrentStatus] = useState();
+  const [modalType, setModalType] = useState("");
 
-  const [openUpdate, setOpenUpdate] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
-  const handleOpenUpdate = () => setOpenUpdate(true);
-
-  const handleCloseUpdate = () => setOpenUpdate(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const handleGetStatus = useCallback(async () => {
     const response = await getAllOrderStatus();
@@ -50,7 +50,13 @@ export default function OrderStatus() {
             justifyContent={"space-between"}
           >
             <Typography variant="h5">Status de pedido</Typography>
-            <IconButton>
+            <IconButton
+              onClick={(e) => {
+                e.preventDefault();
+                handleOpenModal();
+                setModalType("post");
+              }}
+            >
               <AddCircleIcon color="success" sx={{ fontSize: "3vw" }} />
             </IconButton>
           </Grid>
@@ -90,8 +96,9 @@ export default function OrderStatus() {
                     <EditIcon
                       onClick={(e) => {
                         e.preventDefault();
-                        handleOpenUpdate();
+                        handleOpenModal();
                         setCurrentStatus(row);
+                        setModalType("put");
                       }}
                     />
                     <DeleteIcon
@@ -114,10 +121,11 @@ export default function OrderStatus() {
           </Table>
         </Grid>
       </Grid>
-      <UpdateModal
-        openUpdate={openUpdate}
-        onCloseUpdate={handleCloseUpdate}
+      <ModalForm
+        openModal={openModal}
+        onCloseModal={handleCloseModal}
         rowStatus={currentStatus}
+        modalType={modalType}
       />
     </>
   );

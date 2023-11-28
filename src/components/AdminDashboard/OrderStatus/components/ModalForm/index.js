@@ -1,9 +1,17 @@
 import { Button, Modal, Typography, Box, TextField, Grid } from "@mui/material";
 import { useState, useEffect } from "react";
-import { updateOrderStatus } from "../../../../../api/order_status";
+import {
+  updateOrderStatus,
+  createOrderStatus,
+} from "../../../../../api/order_status";
 import { useNavigate } from "react-router-dom";
 
-export default function UpdateModal({ openUpdate, onCloseUpdate, rowStatus }) {
+export default function ModalForm({
+  openModal,
+  onCloseModal,
+  rowStatus,
+  modalType,
+}) {
   const navigate = useNavigate();
   const [status, setStatus] = useState("");
 
@@ -16,24 +24,41 @@ export default function UpdateModal({ openUpdate, onCloseUpdate, rowStatus }) {
       status: status,
     };
 
-    await updateOrderStatus(rowStatus.id, data).then((res) => {
-      if (res.name === "AxiosError") {
-        alert(res.response.data.msg); // mensagem de erro do BACK
-      } else {
-        alert("Status de pedido atualizado com sucesso!");
-        return navigate(0);
-      }
-    });
+    if (modalType === "put") {
+      await updateOrderStatus(rowStatus.id, data).then((res) => {
+        if (res.name === "AxiosError") {
+          alert(res.response.data.msg); // mensagem de erro do BACK
+        } else {
+          alert("Status de pedido atualizado com sucesso!");
+          return navigate(0);
+        }
+      });
+    }
+    if (modalType === "post") {
+      await createOrderStatus(data).then((res) => {
+        if (res.name === "AxiosError") {
+          alert(res.response.data.msg); // mensagem de erro do BACK
+        } else {
+          alert("Status de pedido criado com sucesso!");
+          return navigate(0);
+        }
+      });
+    }
   };
 
   useEffect(() => {
-    if (rowStatus) {
-      setStatus(rowStatus.status);
+    if (modalType === "put") {
+      if (rowStatus) {
+        setStatus(rowStatus.status);
+      }
     }
-  }, [rowStatus]);
+    if (modalType === "post") {
+      setStatus("");
+    }
+  }, [rowStatus, modalType]);
 
   return (
-    <Modal open={openUpdate} onClose={onCloseUpdate}>
+    <Modal open={openModal} onClose={onCloseModal}>
       <Grid
         item
         sx={{
@@ -54,7 +79,7 @@ export default function UpdateModal({ openUpdate, onCloseUpdate, rowStatus }) {
           }} /* encType="multipart/form-data" */
         >
           <Typography component="h1" variant="h5" color="black">
-            Atualizar Status
+            {modalType === "put" ? "Editar Status" : "Criar Status"}
           </Typography>
           <TextField
             autoComplete="off"

@@ -33,6 +33,7 @@ export async function createOrderStatus(data) {
     }
   } catch (error) {
     console.log("ERRO AO CRIAR STATUS DE PEDIDO: ", error);
+    return error;
   }
 }
 
