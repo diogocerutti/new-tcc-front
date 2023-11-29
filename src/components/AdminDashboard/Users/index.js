@@ -9,15 +9,30 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import UpdateModal from "./components/updateModal";
-import { useState } from "react";
+import ModalForm from "./components/ModalForm";
+import { useState, useCallback, useEffect } from "react";
+import { getAllUsers, deleteUser } from "../../../api/user/index.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Users() {
-  const [openUpdate, setOpenUpdate] = useState(false);
+  const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState();
+  const [modalType, setModalType] = useState("");
 
-  const handleOpenUpdate = () => setOpenUpdate(true);
+  const [openModal, setOpenModal] = useState(false);
 
-  const handleCloseUpdate = () => setOpenUpdate(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const handleGetUsers = useCallback(async () => {
+    const response = await getAllUsers();
+    setUsers(response);
+  }, []);
+
+  useEffect(() => {
+    handleGetUsers();
+  }, [handleGetUsers]);
 
   return (
     <>
@@ -62,98 +77,55 @@ export default function Users() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  1
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Edson Silva
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  (49)977864301
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  ed@g.com
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleOpenUpdate();
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Usuário Excluído.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  2
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Carlos Pereira
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  (49)977864351
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  car@c.com
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Usuário Excluído.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left" sx={{ fontSize: 17 }}>
-                  3
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  Diogo Costa
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  (49)911111111
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 17 }}>
-                  diogo@d.com
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Editar!");
-                    }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Usuário Excluído.");
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
+              {users.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell align="left" sx={{ fontSize: 17 }}>
+                    {row.id}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.phone}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 17 }}>
+                    {row.email}
+                  </TableCell>
+                  <TableCell align="right">
+                    <EditIcon
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleOpenModal();
+                        setCurrentUser(row);
+                        setModalType("put");
+                      }}
+                    />
+                    <DeleteIcon
+                      color="error"
+                      onClick={async () => {
+                        await deleteUser(row.id).then((res) => {
+                          if (res.name === "AxiosError") {
+                            alert(res.response.data.msg); // mensagem de erro do BACK
+                          } else {
+                            alert("Usuário removido com sucesso!");
+                            return navigate(0);
+                          }
+                        });
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </Grid>
       </Grid>
-      <UpdateModal openUpdate={openUpdate} onCloseUpdate={handleCloseUpdate} />
+      <ModalForm
+        openModal={openModal}
+        onCloseModal={handleCloseModal}
+        rowUser={currentUser}
+        modalType={modalType}
+      />
     </>
   );
 }

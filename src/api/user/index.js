@@ -69,6 +69,19 @@ export async function updateUser(id_user, data) {
       return response.data;
     }
   } catch (error) {
+    console.log("ERRO AO EDITAR USUÁRIO: ", error);
+    return error;
+  }
+}
+
+export async function updateUserByAdmin(id_user, data) {
+  try {
+    const response = await api.put(`/admin/user/${id_user}`, data);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("ERRO AO EDITAR USUÁRIO POR ADMIN: ", error);
     return error;
   }
 }
@@ -95,6 +108,18 @@ export async function createUser(data) {
       return response.data;
     }
   } catch (error) {
+    return error;
+  }
+}
+
+export async function deleteUser(id) {
+  try {
+    const response = await api.delete(`/user/${id}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("ERRO AO EXCLUIR USUÁRIO: ", error);
     return error;
   }
 }

@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { useAppContext } from "../../hooks";
 import { useEffect, useState, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getUserAddress } from "../../api/user_address";
 import { createOrder } from "../../api/order";
 import Cookies from "js-cookie";
@@ -25,6 +25,7 @@ import Cookies from "js-cookie";
 export function CheckoutForm() {
   const id_user = Cookies.get("user_id");
   const { cart, setCart } = useAppContext();
+  const navigate = useNavigate();
   let state = useLocation();
   let data;
 
@@ -90,10 +91,15 @@ export function CheckoutForm() {
     if (data.hour.length === 0 || data.date === "//") {
       return alert("Data e Hora são obrigatórios!");
     } else
-      return await createOrder(id_user, data).then(
-        setCart([]),
-        alert("Pedido enviado!")
-      );
+      return await createOrder(id_user, data).then((res) => {
+        if (res.name === "AxiosError") {
+          alert(res.response.data.msg); // mensagem de erro do BACK
+        } else {
+          setCart([]);
+          alert("Pedido enviado!");
+          return navigate("/user/orders");
+        }
+      });
   };
 
   useEffect(() => {

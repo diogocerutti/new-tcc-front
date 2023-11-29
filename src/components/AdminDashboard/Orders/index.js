@@ -151,7 +151,7 @@ export default function Orders() {
                     {row.user_relation.name}
                   </TableCell>
                   <TableCell align="right" sx={{ fontSize: 17 }}>
-                    {row.user_relation.user_address_relation.address}
+                    {row.address}
                   </TableCell>
                   <TableCell align="right" sx={{ fontSize: 17 }}>
                     {row.user_relation.phone}

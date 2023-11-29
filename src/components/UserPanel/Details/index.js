@@ -2,8 +2,10 @@ import { Typography, TextField, Box, Button, Grid } from "@mui/material";
 import { useState, useCallback, useEffect } from "react";
 import { getOneUser, updateUser } from "../../../api/user";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 export function Details() {
+  const navigate = useNavigate();
   const id_user = Cookies.get("user_id");
 
   const [name, setName] = useState("");
@@ -41,34 +43,32 @@ export function Details() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    let data = {
-      name: name,
-      email: email,
-      phone: phone,
-      password: currentPassword,
-      newPassword: newPassword,
-      confirmPassword: confirmPassword,
-    };
+    let data =
+      newPassword !== ""
+        ? {
+            name: name,
+            email: email,
+            phone: phone,
+            password: currentPassword,
+            newPassword: newPassword,
+            confirmPassword: confirmPassword,
+          }
+        : {
+            name: name,
+            email: email,
+            phone: phone,
+            password: currentPassword,
+          };
 
-    if (
-      data.name === "" ||
-      data.email === "" ||
-      data.phone === "" ||
-      data.currentPassword === "" ||
-      data.newPassword === "" ||
-      data.confirmPassword === ""
-    ) {
-      alert("Todos os campos são obrigatórios!");
-    } else {
-      await updateUser(id_user, data).then((res) => {
-        if (res.name === "AxiosError") {
-          alert(res.response.data.msg); // mensagem de erro do BACK
-        } else {
-          console.log("DEU CERTO!", res);
-          alert("Dados atualizados com sucesso!");
-        }
-      });
-    }
+    await updateUser(id_user, data).then((res) => {
+      if (res.name === "AxiosError") {
+        alert(res.response.data.msg); // mensagem de erro do BACK
+      } else {
+        console.log("DEU CERTO!", res);
+        alert("Dados atualizados com sucesso!");
+        navigate(0);
+      }
+    });
   };
 
   const handleGetUserDetails = useCallback(async () => {

@@ -33,6 +33,7 @@ export async function createOrder(id_user, data) {
     }
   } catch (error) {
     console.log("ERRO AO CRIAR PEDIDO: ", error);
+    return error;
   }
 }
 
