@@ -42,5 +42,6 @@ export async function deleteUserCreditCard(id_user) {
     }
   } catch (error) {
     console.log("ERRO AO EXCLUIR CARTÃO DE CRÉDITO: ", error.response.data.msg);
+    return error;
   }
 }

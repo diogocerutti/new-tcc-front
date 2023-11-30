@@ -4,11 +4,14 @@ import {
   createUserAddress,
   getUserAddress,
   updateUserAddress,
+  deleteUserAddress,
 } from "../../../api/user_address/index.js";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 export function Address() {
   const id_user = Cookies.get("user_id");
+  const navigate = useNavigate();
 
   const [address, setAddress] = useState("");
   const [postal_code, setPostal_code] = useState("");
@@ -29,6 +32,19 @@ export function Address() {
       default:
         return "";
     }
+  };
+
+  const handleDelete = async (event) => {
+    event.preventDefault();
+
+    await deleteUserAddress(id_user).then((res) => {
+      if (res.name === "AxiosError") {
+        alert(res.response.data.msg); // mensagem de erro do BACK
+      } else {
+        alert("Endereço removido com sucesso!");
+        return navigate(0);
+      }
+    });
   };
 
   const handleSubmit = async (event) => {
@@ -126,15 +142,25 @@ export function Address() {
           value={postal_code}
           onChange={handleChange}
         />
-        <Grid item display="flex" justifyContent={"center"}>
-          <Button
-            type="submit"
-            id="alterar"
-            variant="contained"
-            color="primary"
-          >
+        <Grid
+          item
+          display="flex"
+          justifyContent={hasAddress === true ? "space-evenly" : "center"}
+        >
+          <Button type="submit" id="update" variant="contained" color="primary">
             Salvar Endereço
           </Button>
+          {hasAddress === true && (
+            <Button
+              type="button"
+              id="delete"
+              variant="contained"
+              color="error"
+              onClick={handleDelete}
+            >
+              Excluir Endereço
+            </Button>
+          )}
         </Grid>
       </Box>
     </Grid>

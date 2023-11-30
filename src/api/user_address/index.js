@@ -33,3 +33,15 @@ export async function updateUserAddress(id_user, data) {
     return error;
   }
 }
+
+export async function deleteUserAddress(id_user) {
+  try {
+    const response = await api.delete(`/user_address/${id_user}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("ERRO AO EXCLUIR ENDEREÇO: ", error.response.data.msg);
+    return error;
+  }
+}

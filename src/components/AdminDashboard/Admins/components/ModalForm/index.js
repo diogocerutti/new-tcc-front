@@ -76,7 +76,7 @@ export default function ModalForm({
             username: username,
             email: email,
             password: currentPassword,
-            confirmPassword: confirmPassword,
+            status: status,
           };
 
     if (modalType === "put") {

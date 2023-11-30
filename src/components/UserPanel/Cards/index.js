@@ -4,11 +4,14 @@ import {
   getUserCreditCard,
   createUserCreditCard,
   updateUserCreditCard,
+  deleteUserCreditCard,
 } from "../../../api/credit_card";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 export function Cards() {
   const id_user = Cookies.get("user_id");
+  const navigate = useNavigate();
 
   const [cpf, setCpf] = useState("");
   const [cvv, setCvv] = useState("");
@@ -40,7 +43,7 @@ export function Cards() {
         setCvv(event.target.value);
         break;
       case "date":
-        setExpireDate(dateFormat(event.target.value));
+        setExpireDate(event.target.value);
         break;
       case "number":
         setNumber(event.target.value);
@@ -50,6 +53,19 @@ export function Cards() {
     }
   };
 
+  const handleDelete = async (event) => {
+    event.preventDefault();
+
+    await deleteUserCreditCard(id_user).then((res) => {
+      if (res.name === "AxiosError") {
+        alert(res.response.data.msg); // mensagem de erro do BACK
+      } else {
+        alert("Cartão removido com sucesso!");
+        return navigate(0);
+      }
+    });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -57,7 +73,7 @@ export function Cards() {
       name: name,
       cpf: cpf,
       cvv: cvv,
-      expire_date: expireDate,
+      expire_date: dateFormat(expireDate),
       number: number,
     };
 
@@ -183,15 +199,26 @@ export function Cards() {
             onChange={handleChange}
           />
         </Grid>
-        <Button
-          type="submit"
-          id="enviar"
-          variant="contained"
-          color="primary"
-          sx={{ display: "flex", width: "40%", alignSelf: "center" }}
+        <Grid
+          item
+          display="flex"
+          justifyContent={hasCreditCard === true ? "space-evenly" : "center"}
         >
-          Salvar Cartão
-        </Button>
+          <Button type="submit" id="update" variant="contained" color="primary">
+            Salvar Cartão
+          </Button>
+          {hasCreditCard === true && (
+            <Button
+              type="button"
+              id="delete"
+              variant="contained"
+              color="error"
+              onClick={handleDelete}
+            >
+              Excluir Cartão
+            </Button>
+          )}
+        </Grid>
       </Box>
     </Grid>
   );
