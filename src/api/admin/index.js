@@ -20,6 +20,11 @@ export const adminLogin = async (request) => {
         path: "/",
         sameSite: "strict",
       });
+      Cookies.set("admin_username", response.data.existingAdmin.username, {
+        expires: 1,
+        path: "/",
+        sameSite: "strict",
+      });
       return response.data;
     }
   } catch (error) {

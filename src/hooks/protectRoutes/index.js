@@ -5,9 +5,10 @@ import Cookies from "js-cookie";
 
 export const ProtectAdminRoutes = () => {
   const cookie = Cookies.get("admin");
+  const adminUsername = Cookies.get("admin_username");
 
   return cookie ? (
-    <AdminSidebar>
+    <AdminSidebar adminUsername={adminUsername}>
       <Outlet />
     </AdminSidebar>
   ) : (

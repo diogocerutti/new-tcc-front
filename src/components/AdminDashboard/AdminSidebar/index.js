@@ -65,7 +65,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export function AdminSidebar({ children }) {
+export function AdminSidebar({ children, adminUsername }) {
   const location = useLocation();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -117,7 +117,7 @@ export function AdminSidebar({ children }) {
             alignItems={"center"}
           >
             <PersonIcon />
-            <Typography variant="h6">Diogo Cerutti</Typography>
+            <Typography variant="h6">{adminUsername}</Typography>
           </Grid>
         </Toolbar>
       </AppBar>
