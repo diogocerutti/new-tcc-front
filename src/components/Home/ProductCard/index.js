@@ -27,7 +27,7 @@ export default function ProductCard() {
     <Grid container columnGap={3} rowGap={12} justifyContent="center">
       {products.map(
         (p) =>
-          p.status === "true" && (
+          p.status === true && (
             <Link
               to={`/product/${p.id}`}
               state={p}

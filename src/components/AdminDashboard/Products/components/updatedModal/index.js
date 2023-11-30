@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { updateProduct } from "../../../../../api/product/index.js";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function UpdateModal({
   openUpdate,
@@ -20,13 +21,14 @@ export default function UpdateModal({
   measures,
   categories,
 }) {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [id_measure, setId_measure] = useState("");
   const [id_category, setId_category] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState();
-  const [status, setStatus] = useState();
+  const [status, setStatus] = useState(true);
 
   const handleChangeName = (event) => {
     setName(event.target.value);
@@ -53,11 +55,7 @@ export default function UpdateModal({
   };
 
   const handleChangeStatus = (event) => {
-    if (event.target.checked === true) {
-      setStatus("true");
-    } else {
-      setStatus("false");
-    }
+    setStatus(event.target.checked);
   };
 
   const handleSubmit = async (event) => {
@@ -72,7 +70,16 @@ export default function UpdateModal({
     formData.append("image", image);
     formData.append("status", status);
 
-    await updateProduct(formData, rowData.id).then((res) => console.log(res));
+    console.log(formData.get("status"));
+
+    await updateProduct(formData, rowData.id).then((res) => {
+      if (res.name === "AxiosError") {
+        alert(res.response.data.msg); // mensagem de erro do BACK
+      } else {
+        alert("Produto atualizado com sucesso!");
+        return navigate(0);
+      }
+    });
   };
 
   useEffect(() => {
@@ -199,6 +206,9 @@ export default function UpdateModal({
           <FormGroup>
             <FormControlLabel
               label="Ativo?"
+              id="status"
+              name="status"
+              checked={status}
               control={<Switch onChange={handleChangeStatus} />}
             />
           </FormGroup>

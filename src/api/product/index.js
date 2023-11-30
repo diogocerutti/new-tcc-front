@@ -34,6 +34,7 @@ export async function createProduct(data) {
     }
   } catch (error) {
     console.log("ERRO AO CRIAR PRODUTO: ", error);
+    return error;
   }
 }
 
@@ -47,6 +48,7 @@ export async function updateProduct(data, id) {
     }
   } catch (error) {
     console.log("ERRO AO EDITAR PRODUTO: ", error);
+    return error;
   }
 }
 
@@ -59,6 +61,7 @@ export async function deleteProduct(id) {
       return response.data;
     }
   } catch (error) {
-    console.log("ERRO AO EXCLUIR PRODUTO: ", error.response.data.msg);
+    console.log("ERRO AO EXCLUIR PRODUTO: ", error);
+    return error;
   }
 }

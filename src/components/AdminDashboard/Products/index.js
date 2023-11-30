@@ -24,16 +24,19 @@ import {
 import { getAllMeasures } from "../../../api/measure_type/index.js";
 import { getAllCategories } from "../../../api/product_category/index.js";
 import { useState, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import UpdateModal from "./components/updatedModal/index.js";
 
 export default function Products() {
+  const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currentData, setCurrentData] = useState();
 
   const [name, setName] = useState("");
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState(0);
   const [id_measure, setId_measure] = useState("");
   const [id_category, setId_category] = useState("");
   const [description, setDescription] = useState("");
@@ -109,7 +112,14 @@ export default function Products() {
     formData.append("description", description);
     formData.append("image", image);
 
-    await createProduct(formData).then((res) => console.log(res));
+    await createProduct(formData).then((res) => {
+      if (res.name === "AxiosError") {
+        alert(res.response.data.msg); // mensagem de erro do catch
+      } else {
+        alert("Produto criado com sucesso!");
+        return navigate(0);
+      }
+    });
   };
 
   useEffect(() => {
@@ -315,7 +325,7 @@ export default function Products() {
                       justifyContent={"space-between"}
                     >
                       <Typography fontSize={17}>{row.id}</Typography>
-                      {row.status === "true" ? (
+                      {row.status === true ? (
                         <img
                           alt="status"
                           src={require("../../../images/true.png")}
@@ -363,8 +373,14 @@ export default function Products() {
                     <DeleteIcon
                       color="error"
                       onClick={async () => {
-                        alert("Produto removido!");
-                        await deleteProduct(row.id);
+                        await deleteProduct(row.id).then((res) => {
+                          if (res.name === "AxiosError") {
+                            alert(res.response.data.msg); // mensagem de erro do BACK
+                          } else {
+                            alert("Produto removido com sucesso!");
+                            return navigate(0);
+                          }
+                        });
                       }}
                     />
                   </TableCell>
